@@ -10,13 +10,13 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ title, description, icon, href }: ServiceCardProps) {
   return (
-    <Link href={href} className="block">
-      <div className="bg-white rounded-2xl p-8 flex flex-col items-center text-center shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] border border-gray-50 hover:-translate-y-1 transition-transform cursor-pointer h-full">
-        <div className="mb-5 text-gray-800">
+    <Link href={href} className="block h-full group">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl p-10 flex flex-col items-center text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] border border-gray-100 dark:border-gray-700 hover:-translate-y-2 transition-all duration-300 cursor-pointer h-full">
+        <div className="mb-6 text-gray-800 dark:text-gray-200 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
           {icon}
         </div>
-        <h3 className="font-semibold text-gray-900 text-sm mb-3">{title}</h3>
-        <p className="text-[11px] text-gray-400 leading-relaxed">
+        <h3 className="font-semibold text-gray-900 dark:text-white text-lg mb-4 transition-colors duration-500">{title}</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed transition-colors duration-500">
           {description}
         </p>
       </div>
