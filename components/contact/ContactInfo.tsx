@@ -2,9 +2,11 @@ import React from 'react';
 
 export default function ContactInfo() {
   const socials = [
-    { name: "Twitter", username: "@johnthoinn", url: "#" },
     { name: "Instagram", username: "@johnthoinn", url: "#" },
-    { name: "LinkedIn", username: "@john_fitness", url: "#" },
+    { name: "Tik Tok", username: "@johnthoinn", url: "#" },
+    { name: "YouTube", username: "@john_fitness", url: "#" },
+    { name: "Twitch", username: "@john_fitness", url: "#" },
+    { name: "X", username: "@john_fitness", url: "#" }
   ];
 
   return (

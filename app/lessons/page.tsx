@@ -10,11 +10,11 @@ export default function LanguageTutoringPage() {
       <JapaneseBackground />
 
       {/* Nagłówek */}
-      <div className="mb-12 relative z-10">
+      <div className="mb-10 text-center">
         <h1 className="text-4xl font-semibold text-gray-900 dark:text-white tracking-tight mb-3">
           Language Tutoring
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
+        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto">
           Dedicated to language tutoring education. Book your lesson below.
         </p>
       </div>

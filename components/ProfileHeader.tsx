@@ -1,8 +1,10 @@
 import React from 'react';
 
 export default function ProfileHeader() {
+  // UWAGA: Usunięto klasę `mb-16` z głównego diva, aby strona zarządzająca (page.tsx) 
+  // mogła lepiej kontrolować odstępy pomiędzy profilami, socialami a kartami.
   return (
-    <div className="flex flex-col items-center text-center max-w-xl mb-16">
+    <div className="flex flex-col items-center text-center max-w-xl">
       <div className="w-28 h-28 rounded-full overflow-hidden mb-6 bg-gray-100 dark:bg-gray-700 ring-2 ring-gray-200 dark:ring-gray-600 transition-colors duration-500">
         <img 
           src="https://api.dicebear.com/7.x/notionists/svg?seed=John" 
