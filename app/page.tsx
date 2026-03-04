@@ -16,7 +16,7 @@ export default function CentralHub() {
       <SocialLinks />
 
       {/* Siatka Kart */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl ">
         <ServiceCard 
           title="Voice Acting"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."

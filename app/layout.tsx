@@ -1,37 +1,65 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import Navbar from '@/components/Navbar';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Navbar from '@/components/Navbar'
+import DynamicBackground from '@/components/DynamicBackground'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Central Hub',
-  description: 'John Thoinn - Professional sports producer',
-};
-
-// Skrypt sprawdzający localStorage i preferencje systemu PRZED wyrenderowaniem Reacta
-
+  title: 'John Thoinn - Professional Portfolio',
+  description: 'Professional sports producer, commentators, esports, wellness advices, fitness, and pilates.',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
-    // suppressHydrationWarning jest wymagane, by Next.js nie zgłaszał błędu, 
-    // że tag <html> na serwerze różni się od tego w przeglądarce (przez dodanie klasy 'dark')
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500 flex items-center justify-center p-4 sm:p-8 font-sans antialiased">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark')
+                } else {
+                  document.documentElement.classList.remove('dark')
+                }
+              } catch (_) {}
+            `,
+          }}
+        />
+      </head>
+      
+      {/* 
+        CENTROWANIE: `items-center` i `justify-center` wewnątrz `flex` upewniają się, 
+        że karta znajduje się na absolutnym środku ekranu zarówno w pionie, jak i poziomie.
+      */}
+      <body className={`${inter.className} bg-gray-100 dark:bg-[#0A0D13] min-h-screen flex items-center justify-center p-4 sm:p-8 lg:p-12 relative overflow-x-hidden transition-colors duration-500`}>
         
-        {/* Główny kontener - powiększony do max-w-6xl */}
-        <div className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 rounded-[2.5rem] shadow-2xl w-full max-w-6xl overflow-hidden flex flex-col min-h-187.5 transition-colors duration-500">
+        {/* ANIMOWANE TŁO (działa w tle) */}
+        <DynamicBackground />
+
+        {/* 
+          GŁÓWNA KARTA
+          Brak wymuszonej wysokości (min-h-[90vh]), dopasowuje się do treści i leży na środku.
+        */}
+        <div className="w-full max-w-7xl bg-white dark:bg-[#1C2128] rounded-[3rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] flex flex-col relative z-10 transition-colors duration-500 overflow-hidden">
           
+          {/* Pasek nawigacyjny */}
           <Navbar />
           
-          <div className="flex-1 flex flex-col items-center justify-center px-8 py-6 mb-16">
+          {/* ZAWARTOSĆ (PAGES) dopasowana do treści, bez wymuszonego rozciągania flex-1 */}
+          <main className="flex flex-col items-center px-6 md:px-12 pb-12 w-full">
             {children}
-          </div>
+          </main>
           
         </div>
+        
       </body>
     </html>
-  );
+  )
 }
