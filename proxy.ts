@@ -1,28 +1,27 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Obsługiwane języki
 const locales = ["en", "pl", "jp"];
 const defaultLocale = "en";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Sprawdzamy czy ścieżka ma już prefix języka (np. /pl, /en/lessons)
+  // Uproszczone i pewniejsze sprawdzanie
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
-  if (pathnameHasLocale) return;
+  // Jeśli język JUŻ jest w URL, pozwól zapytaniu przejść dalej bez ruszania go!
+  if (pathnameHasLocale) {
+    return NextResponse.next();
+  }
 
-  // Jeśli brak języka, przekierowujemy na domyślny (dodajemy /en na początek)
+  // W przeciwnym razie wymuś domyślny język
   request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
   return NextResponse.redirect(request.nextUrl);
 }
 
 export const config = {
-  matcher: [
-    // Pomijamy pliki systemowe Next.js, API i obrazki, aby ich nie psuć
-    "/((?!_next|api|favicon.ico|.*\\..*).*)",
-  ],
+  matcher: ["/((?!_next|api|favicon.ico|.*\\..*).*)"],
 };

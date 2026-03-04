@@ -1,27 +1,24 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import '../globals.css'
-import Navbar from '@/components/Navbar'
-import DynamicBackground from '@/components/DynamicBackground'
+import type { Metadata } from 'next' 
+import { Inter } from 'next/font/google' 
+import '../globals.css' 
+import Navbar from '@/components/Navbar' 
+import DynamicBackground from '@/components/DynamicBackground' 
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] }) 
 
-export const metadata: Metadata = {
-  title: 'John Thoinn - Professional Portfolio',
-  description: 'Professional sports producer, commentators, esports, wellness advices, fitness, and pilates.',
-}
+export const metadata: Metadata = { 
+  title: 'John Thoinn - Professional Portfolio', 
+  description: 'Professional sports producer, commentators, esports, wellness advices, fitness, and pilates.', 
+} 
 
-// Zmiana 1: Typujemy 'params' jako Promise
-export default async function RootLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ lang: string }>;
-}) {
-  // Zmiana 2: Asynchronicznie wyciągamy 'lang' przy użyciu 'await'
-  const { lang } = await params;
-
+export default async function RootLayout({ 
+  children, 
+  params, 
+}: { 
+  children: React.ReactNode; 
+  params: Promise<{ lang: string }>; 
+}) { 
+  const { lang } = await params; 
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>

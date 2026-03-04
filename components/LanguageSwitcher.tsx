@@ -3,17 +3,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Globe } from 'lucide-react'; // Zakładam, że masz lucide-react, bo był w poprzednich wersjach
 
 export default function LanguageSwitcher() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Wyciągamy aktualny język (pierwszy segment po slashu, np. 'pl' z '/pl/lessons')
   const currentLang = pathname.split('/')[1] || 'en';
 
-  // Obsługa zamykania po kliknięciu poza komponentem
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -24,10 +21,8 @@ export default function LanguageSwitcher() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Funkcja budująca link dla nowego języka
   const getLanguageUrl = (targetLang: string) => {
     const segments = pathname.split('/');
-    // Podmieniamy obecny język na docelowy
     segments[1] = targetLang;
     return segments.join('/') || '/';
   };
@@ -40,23 +35,28 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* Przycisk otwierający menu */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center text-gray-600 dark:text-gray-300 relative"
-        aria-label="Change language"
+        aria-label="Select language"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300 flex items-center justify-center text-gray-600 dark:text-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 dark:focus-visible:ring-gray-500"
       >
-        <Globe size={18} />
-        {/* Mały wskaźnik obecnego języka */}
-        <span className="absolute -bottom-1 -right-1 text-[9px] font-bold bg-black text-white dark:bg-white dark:text-black rounded px-1 uppercase tracking-wider">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span className="absolute -bottom-1 -right-1 text-[9px] font-bold bg-gray-900 text-white dark:bg-white dark:text-gray-900 rounded px-1 uppercase tracking-wider">
           {currentLang}
         </span>
       </button>
 
-      {/* Dropdown z językami */}
       <div 
-        className={`absolute right-0 mt-2 w-40 bg-white dark:bg-[#1C2128] rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 transition-all duration-200 overflow-hidden z-50 py-2 ${
-          isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-2 invisible'
+        role="menu"
+        aria-orientation="vertical"
+        className={`absolute right-0 mt-2 w-40 bg-white dark:bg-[#252a33] rounded-xl shadow-lg border border-gray-100 dark:border-gray-700/50 transition-all duration-300 origin-top-right z-50 py-2 ${
+          isOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible pointer-events-none'
         }`}
       >
         {languages.map((lang) => (
@@ -64,10 +64,11 @@ export default function LanguageSwitcher() {
             key={lang.code}
             href={getLanguageUrl(lang.code)}
             onClick={() => setIsOpen(false)}
-            className={`block px-4 py-2 text-sm transition-colors duration-150 ${
+            role="menuitem"
+            className={`block px-4 py-2 text-sm transition-colors duration-200 focus:outline-none focus-visible:bg-gray-100 dark:focus-visible:bg-gray-700 ${
               currentLang === lang.code
-                ? 'bg-gray-50 dark:bg-gray-800 text-black dark:text-white font-semibold'
-                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-black dark:hover:text-white'
+                ? 'bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white font-semibold'
+                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             {lang.label}

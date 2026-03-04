@@ -1,41 +1,41 @@
-import ProfileHeader from '@/components/ProfileHeader';
-import ServiceCard from '@/components/ServiceCard';
-import SocialLinks from '@/components/SocialLinks';
-import { VoiceIcon, LanguageIcon, FitnessIcon } from '@/components/icons';
+import ProfileHeader from '@/components/ProfileHeader'; 
+import ServiceCard from '@/components/ServiceCard'; 
+import SocialLinks from '@/components/SocialLinks'; 
+import { VoiceIcon, LanguageIcon, FitnessIcon } from '@/components/icons'; 
 
-export default function CentralHub() {
+export default function CentralHub() { 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full max-w-5xl mx-auto gap-12 md:gap-16 pb-8"> 
       
-      {/* Nagłówek profilu */}
-      <div className="mb-8">
-        <ProfileHeader />
-      </div>
+      {/* Profil - ujednolicony odstęp */}
+      <section className="w-full flex flex-col items-center gap-8"> 
+        <ProfileHeader /> 
+        <SocialLinks /> 
+      </section>
 
-      {/* Ikony Social Media */}
-      <SocialLinks />
-
-      {/* Siatka Kart */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl ">
-        <ServiceCard 
-          title="Voice Acting"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-          href="/voice-acting"
-          icon={<VoiceIcon />}
-        />
-        <ServiceCard 
-          title="Japanese & English"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-          href="/languages"
-          icon={<LanguageIcon />}
-        />
-        <ServiceCard 
-          title="Pilates & Fitness"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-          href="/training"
-          icon={<FitnessIcon />}
-        />
-      </div>
+      {/* Siatka Usług */}
+      <section aria-label="My Services" className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full"> 
+          <ServiceCard 
+            title="Voice Acting" 
+            description="Professional voiceover for commercials, anime, and corporate needs." 
+            href="/voice-acting" 
+            icon={<VoiceIcon />} 
+          /> 
+          <ServiceCard 
+            title="Language Tutoring" 
+            description="Learn English and Japanese (日本語) with a tailored approach." 
+            href="/lessons" 
+            icon={<LanguageIcon />} 
+          /> 
+          <ServiceCard 
+            title="Pilates & Fitness" 
+            description="Achieve your physical goals with custom training and wellness plans." 
+            href="/training" 
+            icon={<FitnessIcon />} 
+          /> 
+        </div> 
+      </section>
       
     </div>
   );
