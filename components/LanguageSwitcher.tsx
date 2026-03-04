@@ -1,64 +1,79 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { GlobeIcon } from '@/components/icons';
-
-const languages = [
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'pl', name: 'Polski', flag: '🇵🇱' },
-  { code: 'ja', name: '日本語', flag: '🇯🇵' },
-];
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Globe } from 'lucide-react'; // Zakładam, że masz lucide-react, bo był w poprzednich wersjach
 
 export default function LanguageSwitcher() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(languages[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Wyciągamy aktualny język (pierwszy segment po slashu, np. 'pl' z '/pl/lessons')
+  const currentLang = pathname.split('/')[1] || 'en';
+
+  // Obsługa zamykania po kliknięciu poza komponentem
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelect = (lang: typeof languages[0]) => {
-    setSelectedLang(lang);
-    setIsOpen(false);
+  // Funkcja budująca link dla nowego języka
+  const getLanguageUrl = (targetLang: string) => {
+    const segments = pathname.split('/');
+    // Podmieniamy obecny język na docelowy
+    segments[1] = targetLang;
+    return segments.join('/') || '/';
   };
+
+  const languages = [
+    { code: 'en', label: 'English' },
+    { code: 'pl', label: 'Polski' },
+    { code: 'jp', label: '日本語 (Japanese)' },
+  ];
 
   return (
     <div className="relative" ref={dropdownRef}>
-      
-      {/* Ujednolicony wymiar w-11 h-11 by pasował do przycisku obok */}
-      <button 
+      {/* Przycisk otwierający menu */}
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-11 h-11 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-300 text-gray-800 dark:text-gray-200 focus:outline-none flex items-center justify-center"
+        className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center text-gray-600 dark:text-gray-300 relative"
         aria-label="Change language"
       >
-        <GlobeIcon className="w-[20px] h-[20px]" />
+        <Globe size={18} />
+        {/* Mały wskaźnik obecnego języka */}
+        <span className="absolute -bottom-1 -right-1 text-[9px] font-bold bg-black text-white dark:bg-white dark:text-black rounded px-1 uppercase tracking-wider">
+          {currentLang}
+        </span>
       </button>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-3 w-40 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-50 overflow-hidden transform opacity-100 scale-100 transition-all origin-top-right">
-          <div className="py-2 flex flex-col">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => handleSelect(lang)}
-                className={`w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors
-                  ${selectedLang.code === lang.code ? 'font-semibold text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/10' : 'text-gray-700 dark:text-gray-300'}
-                `}
-              >
-                <span className="text-lg leading-none">{lang.flag}</span>
-                <span>{lang.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Dropdown z językami */}
+      <div 
+        className={`absolute right-0 mt-2 w-40 bg-white dark:bg-[#1C2128] rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 transition-all duration-200 overflow-hidden z-50 py-2 ${
+          isOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-2 invisible'
+        }`}
+      >
+        {languages.map((lang) => (
+          <Link
+            key={lang.code}
+            href={getLanguageUrl(lang.code)}
+            onClick={() => setIsOpen(false)}
+            className={`block px-4 py-2 text-sm transition-colors duration-150 ${
+              currentLang === lang.code
+                ? 'bg-gray-50 dark:bg-gray-800 text-black dark:text-white font-semibold'
+                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-black dark:hover:text-white'
+            }`}
+          >
+            {lang.label}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

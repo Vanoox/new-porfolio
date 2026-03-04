@@ -4,24 +4,26 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { MenuIcon, CloseIcon } from '@/components/icons'; // Upewnij się, że zaimportowałeś nowe ikony
 
 export default function Navbar() {
-  const [isDark, setIsDark] = useState<boolean>(false);
+  const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const pathname = usePathname();
+
+  // Wyciąganie obecnego języka i czystej ścieżki
+  const currentLang = pathname.split('/')[1] || 'en';
+  const normalizedPath = pathname.replace(/^\/[a-z]{2}(\/|$)/, '/') || '/';
 
   useEffect(() => {
     setMounted(true);
     setIsDark(document.documentElement.classList.contains('dark'));
   }, []);
 
-  // Automatyczne zamykanie menu mobilnego jeśli powiększymy okno przeglądarki
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setIsMobileMenuOpen(false);
       }
     };
@@ -42,7 +44,7 @@ export default function Navbar() {
   };
 
   const getLinkClasses = (path: string) => {
-    const isActive = pathname === path;
+    const isActive = normalizedPath === path || normalizedPath === `${path}/`;
     return `transition-colors duration-300 ${
       isActive 
         ? "text-gray-900 dark:text-white font-semibold" 
@@ -50,89 +52,81 @@ export default function Navbar() {
     }`;
   };
 
+  // Klasy dla pełnoekranowego menu mobilnego
+  const getMobileLinkClasses = (path: string) => {
+    const isActive = normalizedPath === path || normalizedPath === `${path}/`;
+    return `text-2xl sm:text-3xl transition-colors duration-300 ${
+      isActive 
+        ? "text-black dark:text-white font-bold" 
+        : "text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white font-medium"
+    }`;
+  };
+
   return (
     <>
-      {/* 
-        Główny pasek nawigacyjny. 
-        Zmieniono paddingi: na małych ekranach mniejsze, by wszystko się zmieściło (px-6 py-6),
-        na większych (md) odzyskuje swoją przestrzeń (px-12 py-10).
-      */}
-      <nav className="flex items-center justify-between px-6 py-6 md:px-12 md:py-10 w-full relative z-50">
-        
-        {/* 1. LEWA STRONA: LOGO */}
-        <div className="flex justify-start">
-          <Link 
-            href="/" 
-            className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full border-2 border-gray-900 dark:border-white transition-colors duration-300"
-            onClick={() => setIsMobileMenuOpen(false)} // Zamknij menu po kliknięciu loga
-          >
-            <span className="text-gray-900 dark:text-white font-bold text-lg transition-colors duration-300">C</span>
-          </Link>
+      {/* GŁÓWNY NAV */}
+      <nav className="w-full flex items-center justify-between px-6 py-6 md:px-12 md:py-10 relative z-50">
+        <Link 
+          href={`/${currentLang}`} 
+          className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-800 dark:text-white font-bold text-xl"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          C
+        </Link>
+
+        {/* MENU DESKTOP */}
+        <div className="hidden lg:flex flex-1 justify-center items-center space-x-10">
+          <Link href={`/${currentLang}`} className={getLinkClasses("/")}>Home</Link>
+          <Link href={`/${currentLang}/voice-acting`} className={getLinkClasses("/voice-acting")}>Voice Acting</Link>
+          <Link href={`/${currentLang}/lessons`} className={getLinkClasses("/lessons")}>Lessons</Link>
+          <Link href={`/${currentLang}/training`} className={getLinkClasses("/training")}>Training</Link>
+          <Link href={`/${currentLang}/contact`} className={getLinkClasses("/contact")}>Contact</Link>
         </div>
-        
-        {/* 2. ŚRODEK: LINKI NAWIGACYJNE (Tylko DESKTOP / lg i md) */}
-        <div className="hidden lg:flex space-x-12 text-base">
-          <Link href="/" className={getLinkClasses("/")}>Home</Link>
-          <Link href="/voice-acting" className={getLinkClasses("/voice-acting")}>Voice Acting</Link>
-          <Link href="/lessons" className={getLinkClasses("/lessons")}>Lessons</Link>
-          <Link href="/training" className={getLinkClasses("/training")}>Training</Link>
-          <Link href="/contact" className={getLinkClasses("/contact")}>Contact</Link>
-        </div>
-        
-        {/* 3. PRAWA STRONA: PRZYCISKI AKCJI ORAZ HAMBURGER */}
-        <div className="flex justify-end items-center gap-2 sm:gap-4">
-          
-          {/* Przycisk motywu (Dark Mode) */}
-          <button 
+
+        {/* PRZYCISKI - PRAWA STRONA */}
+        <div className="flex items-center space-x-3 md:space-x-4 flex-shrink-0">
+          <button
             onClick={toggleTheme}
-            className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-300 text-gray-800 dark:text-yellow-400 focus:outline-none flex items-center justify-center"
-            aria-label="Toggle Dark Mode"
+            className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center text-gray-600 dark:text-gray-300"
+            aria-label="Toggle theme"
           >
             {mounted && (
               isDark ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="5" />
-                  <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3V4M12 20V21M4 12H3M21 12H20M6.31412 6.31412L5.60706 5.60706M17.6859 6.31412L18.3929 5.60706M6.31412 17.6859L5.60706 18.3929M17.6859 17.6859L18.3929 18.3929M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               )
             )}
           </button>
-
-          {/* Przycisk zmiany języka */}
+          
           <LanguageSwitcher />
 
-          {/* Przycisk HAMBURGER MENU (Tylko MOBILE, znika na lg) */}
-          <button 
+          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden w-10 h-10 shrink-0 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center text-gray-800 dark:text-white"
+            className="lg:hidden w-10 h-10 shrink-0 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center text-gray-800 dark:text-white relative z-50"
             aria-label="Toggle Menu"
           >
-            {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            {isMobileMenuOpen ? (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            ) : (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            )}
           </button>
-
         </div>
-
       </nav>
 
-      {/* 
-        WYSUWANE MENU MOBILNE 
-        Animowane płynnie w dół tylko wtedy gdy isMobileMenuOpen === true
-      */}
+      {/* PEŁNOEKRANOWE MENU MOBILNE (OVERLAY) */}
       <div 
-        className={`fixed inset-0 z-40 bg-white dark:bg-[#1C2128] flex flex-col justify-center items-center transition-all duration-300 ease-in-out lg:hidden
-          ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}
-        `}
+        className={`lg:hidden fixed inset-0 bg-white/95 dark:bg-[#0A0D13]/95 backdrop-blur-md z-40 transition-all duration-300 ease-in-out flex flex-col items-center justify-center ${
+          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+        }`}
       >
-        <div className="flex flex-col items-center gap-8 text-2xl">
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className={getLinkClasses("/")}>Home</Link>
-          <Link href="/voice-acting" onClick={() => setIsMobileMenuOpen(false)} className={getLinkClasses("/voice-acting")}>Voice Acting</Link>
-          <Link href="/lessons" onClick={() => setIsMobileMenuOpen(false)} className={getLinkClasses("/lessons")}>Lessons</Link>
-          <Link href="/training" onClick={() => setIsMobileMenuOpen(false)} className={getLinkClasses("/training")}>Training</Link>
-          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className={getLinkClasses("/contact")}>Contact</Link>
+        <div className="flex flex-col items-center space-y-8 mt-12">
+          <Link href={`/${currentLang}`} onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkClasses("/")}>Home</Link>
+          <Link href={`/${currentLang}/voice-acting`} onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkClasses("/voice-acting")}>Voice Acting</Link>
+          <Link href={`/${currentLang}/lessons`} onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkClasses("/lessons")}>Lessons</Link>
+          <Link href={`/${currentLang}/training`} onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkClasses("/training")}>Training</Link>
+          <Link href={`/${currentLang}/contact`} onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkClasses("/contact")}>Contact</Link>
         </div>
       </div>
     </>

@@ -7,18 +7,14 @@ export default function DynamicBackground() {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
+  // Dodano normalizację ścieżki - obcina /en, /pl, /ja
+  const normalizedPath = pathname.replace(/^\/[a-z]{2}(\/|$)/, '/') || '/';
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
-
-  // ====================================================================================
-  // DEFINICJE WZORÓW
-  // LIGHT: Wzory czarne (#000000) - bardzo wysoki kontrast, idealne na jasne tło
-  // DARK: Wzory białe (#FFFFFF) - bardzo wysoki kontrast, idealne na ciemne tło
-  // Opacity będzie kontrolowane przez klasy Tailwind w JSX poniżej.
-  // ====================================================================================
 
   // 1. HOME ( / ) - Plusy i kropki
   const homeLight = `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 40v20M40 50h20' stroke='%23000000' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='10' cy='10' r='3' fill='%23000000'/%3E%3Ccircle cx='90' cy='90' r='3' fill='%23000000'/%3E%3C/svg%3E")`;
@@ -46,25 +42,24 @@ export default function DynamicBackground() {
   let darkPattern = defaultPattern;
   let bgSize = "100px 100px";
 
-  if (pathname === '/voice-acting') {
+  // Zmiana warunków na 'normalizedPath'
+  if (normalizedPath === '/voice-acting') {
     lightPattern = voiceLight;
     darkPattern = voiceDark;
     bgSize = "100px 100px";
-  } else if (pathname === '/lessons') {
+  } else if (normalizedPath === '/lessons') {
     lightPattern = lessonLight;
     darkPattern = lessonDark;
     bgSize = "200px 200px";
-  } else if (pathname === '/training') {
+  } else if (normalizedPath === '/training') {
     lightPattern = trainingLight;
     darkPattern = trainingDark;
     bgSize = "120px 120px";
-  }
-  else if (pathname === '/') {
+  } else if (normalizedPath === '/') {
     lightPattern = homeLight;
     darkPattern = homeDark;
     bgSize = "100px 100px";
-  }
-  else if (pathname === '/contact') {
+  } else if (normalizedPath === '/contact') {
     lightPattern = contactLight;
     darkPattern = contactDark;
     bgSize = "120px 120px";
@@ -74,20 +69,11 @@ export default function DynamicBackground() {
 
   return (
     <>
-      {/* 
-        Warstwa dla trybu jasnego:
-        opacity-10 daje doskonałą widoczność intensywnie czarnego wzoru bez "przytłaczania".
-      */}
       <div 
         className="fixed inset-0 pointer-events-none -z-10 animate-pattern-slide opacity-10 dark:hidden"
         style={{ backgroundImage: lightPattern, backgroundSize: bgSize, backgroundRepeat: 'repeat' }}
       />
       
-      {/* 
-        Warstwa dla trybu ciemnego:
-        opacity-5 dla czystej bieli jest często bardzo wyraźne na ciemnym tle,
-        możesz zmienić na opacity-10 jeśli nadal będzie za mało widoczne.
-      */}
       <div 
         className="fixed inset-0 pointer-events-none -z-10 animate-pattern-slide opacity-10 hidden dark:block"
         style={{ backgroundImage: darkPattern, backgroundSize: bgSize, backgroundRepeat: 'repeat' }}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
+import '../globals.css'
 import Navbar from '@/components/Navbar'
 import DynamicBackground from '@/components/DynamicBackground'
 
@@ -11,13 +11,19 @@ export const metadata: Metadata = {
   description: 'Professional sports producer, commentators, esports, wellness advices, fitness, and pilates.',
 }
 
-export default function RootLayout({
+// Zmiana 1: Typujemy 'params' jako Promise
+export default async function RootLayout({
   children,
+  params,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
 }) {
+  // Zmiana 2: Asynchronicznie wyciągamy 'lang' przy użyciu 'await'
+  const { lang } = await params;
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -34,31 +40,15 @@ export default function RootLayout({
         />
       </head>
       
-      {/* 
-        CENTROWANIE: `items-center` i `justify-center` wewnątrz `flex` upewniają się, 
-        że karta znajduje się na absolutnym środku ekranu zarówno w pionie, jak i poziomie.
-      */}
       <body className={`${inter.className} bg-gray-100 dark:bg-[#0A0D13] min-h-screen flex items-center justify-center p-4 sm:p-8 lg:p-12 relative overflow-x-hidden transition-colors duration-500`}>
-        
-        {/* ANIMOWANE TŁO (działa w tle) */}
         <DynamicBackground />
 
-        {/* 
-          GŁÓWNA KARTA
-          Brak wymuszonej wysokości (min-h-[90vh]), dopasowuje się do treści i leży na środku.
-        */}
         <div className="w-full max-w-7xl bg-white dark:bg-[#1C2128] rounded-[3rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] flex flex-col relative z-10 transition-colors duration-500 overflow-hidden">
-          
-          {/* Pasek nawigacyjny */}
           <Navbar />
-          
-          {/* ZAWARTOSĆ (PAGES) dopasowana do treści, bez wymuszonego rozciągania flex-1 */}
           <main className="flex flex-col items-center px-6 md:px-12 pb-12 w-full">
             {children}
           </main>
-          
         </div>
-        
       </body>
     </html>
   )
