@@ -7,6 +7,12 @@ import { Menu } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 type NavbarProps = {
@@ -37,7 +43,7 @@ export default function Navbar(props: NavbarProps) {
   };
 
   return (
-    <nav className="flex items-center justify-between px-12 py-10 w-full lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+    <div className="flex items-center justify-between px-12 py-10 w-full lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
       <Link
         href={`/${props.currentLang}`}
         className="shrink-0 flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-500 text-gray-800 dark:text-white font-bold text-xl"
@@ -46,21 +52,35 @@ export default function Navbar(props: NavbarProps) {
       </Link>
 
       <div className="hidden lg:flex flex-1 justify-center items-center space-x-10">
-        <Link href={`/${props.currentLang}`} className={getLinkClasses("/")}>
-          Home
-        </Link>
-        <Link href={`/${props.currentLang}/voice-acting`} className={getLinkClasses("/voice-acting")}>
-          Voice Acting
-        </Link>
-        <Link href={`/${props.currentLang}/lessons`} className={getLinkClasses("/lessons")}>
-          Lessons
-        </Link>
-        <Link href={`/${props.currentLang}/training`} className={getLinkClasses("/training")}>
-          Training
-        </Link>
-        <Link href={`/${props.currentLang}/contact`} className={getLinkClasses("/contact")}>
-          Contact
-        </Link>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href={`/${props.currentLang}`}>Home</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href={`/${props.currentLang}/voice-acting`}>Voice Acting</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href={`/${props.currentLang}/lessons`}>Lessons</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href={`/${props.currentLang}/training`}>Training</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link href={`/${props.currentLang}/contact`}>Contact</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
 
       <div className="flex items-center justify-end space-x-3 md:space-x-4 shrink-0">
@@ -86,48 +106,69 @@ export default function Navbar(props: NavbarProps) {
               className="h-full bg-white/95 dark:bg-[#0A0D13]/95 backdrop-blur-md flex flex-col items-center justify-center border-none"
             >
               <SheetTitle className="sr-only">Mobile navigation menu</SheetTitle>
-
-              <div className="flex flex-col items-center space-y-8 mt-4">
-                <Link
-                  href={`/${props.currentLang}`}
-                  onClick={() => setIsOpen(false)}
-                  className={getMobileLinkClasses("/")}
-                >
-                  Home
-                </Link>
-                <Link
-                  href={`/${props.currentLang}/voice-acting`}
-                  onClick={() => setIsOpen(false)}
-                  className={getMobileLinkClasses("/voice-acting")}
-                >
-                  Voice Acting
-                </Link>
-                <Link
-                  href={`/${props.currentLang}/lessons`}
-                  onClick={() => setIsOpen(false)}
-                  className={getMobileLinkClasses("/lessons")}
-                >
-                  Lessons
-                </Link>
-                <Link
-                  href={`/${props.currentLang}/training`}
-                  onClick={() => setIsOpen(false)}
-                  className={getMobileLinkClasses("/training")}
-                >
-                  Training
-                </Link>
-                <Link
-                  href={`/${props.currentLang}/contact`}
-                  onClick={() => setIsOpen(false)}
-                  className={getMobileLinkClasses("/contact")}
-                >
-                  Contact
-                </Link>
-              </div>
+              <NavigationMenu>
+                <NavigationMenuList className="flex flex-col items-center space-y-8 mt-4">
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={`/${props.currentLang}`}
+                        onClick={() => setIsOpen(false)}
+                        className={getMobileLinkClasses("/")}
+                      >
+                        Home
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={`/${props.currentLang}/voice-acting`}
+                        onClick={() => setIsOpen(false)}
+                        className={getMobileLinkClasses("/voice-acting")}
+                      >
+                        Voice Acting
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={`/${props.currentLang}/lessons`}
+                        onClick={() => setIsOpen(false)}
+                        className={getMobileLinkClasses("/lessons")}
+                      >
+                        Lessons
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={`/${props.currentLang}/training`}
+                        onClick={() => setIsOpen(false)}
+                        className={getMobileLinkClasses("/training")}
+                      >
+                        Training
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={`/${props.currentLang}/contact`}
+                        onClick={() => setIsOpen(false)}
+                        className={getMobileLinkClasses("/contact")}
+                      >
+                        Contact
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             </SheetContent>
           </Sheet>
         </div>
       </div>
-    </nav>
+    </div>
   );
 }
