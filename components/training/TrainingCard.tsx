@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRightIcon } from '@/components/icons';
+import { ArrowRightIcon } from '@/components/Icons';
 
 interface TrainingCardProps {
   title: string;

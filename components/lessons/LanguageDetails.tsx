@@ -1,5 +1,5 @@
 import React from 'react';
-import { UKFlagIcon, JapanFlagIcon } from '@/components/icons';
+import { UKFlagIcon, JapanFlagIcon } from '@/components/Icons';
 
 export default function LanguageDetails() {
   return (

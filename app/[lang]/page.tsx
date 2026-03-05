@@ -1,7 +1,7 @@
 import ProfileHeader from '@/components/ProfileHeader'; 
 import ServiceCard from '@/components/ServiceCard'; 
 import SocialLinks from '@/components/SocialLinks'; 
-import { VoiceIcon, LanguageIcon, FitnessIcon } from '@/components/icons'; 
+import { VoiceIcon, LanguageIcon, FitnessIcon } from '@/components/Icons'; 
 
 export default function CentralHub() { 
   return (

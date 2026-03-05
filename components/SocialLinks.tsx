@@ -1,5 +1,5 @@
 import React from 'react';
-import { InstagramIcon, YoutubeIcon, TwitchIcon, XIcon, TiktokIcon } from '@/components/icons';
+import { InstagramIcon, YoutubeIcon, TwitchIcon, XIcon, TiktokIcon } from '@/components/Icons';
 
 export default function SocialLinks() {
   const socials = [

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import LanguageProfile from "@/components/lessons/LanguageProfile";
 import LanguageDetails from "@/components/lessons/LanguageDetails";
-import { ArrowRightIcon } from "@/components/icons";
+import { ArrowRightIcon } from "@/components/Icons";
 
 export default function LanguageTutoringPage() {
   return (

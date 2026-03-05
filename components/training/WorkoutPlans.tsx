@@ -1,5 +1,5 @@
 import React from 'react';
-import { BriefcaseIcon, ChevronRightIcon } from '@/components/icons'; // Musisz upewnić się, że masz te ikony (opis poniżej)
+import { BriefcaseIcon, ChevronRightIcon } from '@/components/Icons'; // Musisz upewnić się, że masz te ikony (opis poniżej)
 
 export default function WorkoutPlans() {
   const plans = [

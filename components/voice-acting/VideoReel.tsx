@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ChevronRightIcon, ChevronLeftIcon } from '@/components/icons';
+import { ChevronRightIcon, ChevronLeftIcon } from '@/components/Icons';
 
 type YouTubeVideo = {
   id: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { PlayIcon, PauseIcon, VolumeIcon } from "@/components/icons";
+import { PlayIcon, PauseIcon, VolumeIcon } from "@/components/Icons";
 
 type Track = {
   id: string;

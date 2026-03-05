@@ -1,6 +1,6 @@
 import React from 'react';
 import TrainingCard from '@/components/training/TrainingCard';
-import { DumbbellIcon, LotusIcon } from '@/components/icons';
+import { DumbbellIcon, LotusIcon } from '@/components/Icons';
 
 export default function TrainingPage() {
   return (

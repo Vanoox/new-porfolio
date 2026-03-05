@@ -1,20 +1,30 @@
 "use client";
 
 import React, { useState } from 'react';
-import { CloseIcon } from '@/components/icons'; // Upewnij się, że masz CloseIcon w icons.tsx
+import { CloseIcon } from '@/components/Icons'; // Upewnij się, że masz CloseIcon w icons.tsx
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
+    const form = e.currentTarget;
+
     // Symulacja wysyłania (tutaj docelowo dodasz np. fetch do swojego API mailowego)
     setTimeout(() => {
       setIsSubmitting(false);
-      alert("Message sent successfully!");
-    }, 1000);
+      setShowSuccess(true);
+      form.reset();
+
+      // Ukrycie okienka z sukcesem po 3 sekundach
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+    }, 1500);
   };
 
   return (
@@ -24,13 +34,37 @@ export default function ContactForm() {
         GŁÓWNY KOMPONENT: FORMULARZ
         ================================================================
       */}
-      <section className="bg-white dark:bg-gray-800 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] p-8 lg:p-10 w-full relative">
+      <section className="bg-white dark:bg-gray-800 rounded-[2rem] border border-gray-100 dark:border-gray-700 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] p-8 lg:p-10 w-full relative overflow-hidden">
         
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-8">
+        {/*
+          POWIADOMIENIE O SUKCESIE
+          Wyświetla się na środku formularza z efektem rozmycia tła.
+        */}
+        <div 
+          className={`absolute inset-0 z-20 flex items-center justify-center transition-all duration-300 pointer-events-none bg-white/40 dark:bg-gray-800/60 backdrop-blur-[2px] ${
+            showSuccess ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
+        >
+          <div className={`bg-white dark:bg-gray-900 border border-emerald-100 dark:border-emerald-900/50 shadow-2xl rounded-2xl p-6 md:p-8 flex flex-col items-center text-center transform transition-transform duration-500 pointer-events-auto ${
+            showSuccess ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
+          }`}>
+            <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mb-4">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Message Sent!</h4>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Thank you for reaching out.<br/>I'll get back to you shortly.
+            </p>
+          </div>
+        </div>
+
+        <h2 className={`text-xl font-semibold text-gray-900 dark:text-white mb-8 transition-opacity duration-300 ${showSuccess ? 'opacity-30' : 'opacity-100'}`}>
           Send a message
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit} className={`flex flex-col gap-6 transition-opacity duration-300 ${showSuccess ? 'opacity-30' : 'opacity-100'}`}>
           
           <div className="flex flex-col gap-2">
             <label htmlFor="name" className="text-xs font-medium text-gray-500 dark:text-gray-400 ml-1">
@@ -40,8 +74,9 @@ export default function ContactForm() {
               type="text" 
               id="name" 
               required
+              disabled={isSubmitting || showSuccess}
               placeholder="John Doe"
-              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all disabled:opacity-50"
             />
           </div>
 
@@ -53,8 +88,9 @@ export default function ContactForm() {
               type="email" 
               id="email" 
               required
+              disabled={isSubmitting || showSuccess}
               placeholder="john@example.com"
-              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all disabled:opacity-50"
             />
           </div>
 
@@ -64,7 +100,8 @@ export default function ContactForm() {
             </label>
             <select 
               id="topic" 
-              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all appearance-none cursor-pointer"
+              disabled={isSubmitting || showSuccess}
+              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all appearance-none cursor-pointer disabled:opacity-50"
             >
               <option value="voice">Voice Acting</option>
               <option value="language">Language Tutoring</option>
@@ -81,17 +118,28 @@ export default function ContactForm() {
               id="message" 
               required
               rows={4}
+              disabled={isSubmitting || showSuccess}
               placeholder="Tell me about your project..."
-              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all resize-none"
+              className="w-full bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all resize-none disabled:opacity-50"
             />
           </div>
 
           <button 
             type="submit"
-            disabled={isSubmitting}
-            className="mt-4 w-full bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold py-4 rounded-xl transition-all text-sm shadow-md disabled:opacity-70 flex justify-center items-center gap-2"
+            disabled={isSubmitting || showSuccess}
+            className="mt-4 w-full bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold py-4 rounded-xl transition-all text-sm shadow-md disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
           >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Sending...
+              </>
+            ) : (
+              'Send Message'
+            )}
           </button>
 
           {/* Dopisana zgoda z klikalnym linkiem */}
