@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { ChevronRightIcon, ChevronLeftIcon } from '@/components/Icons';
+import { useState } from "react";
+import { ChevronRightIcon, ChevronLeftIcon } from "@/components/Icons";
 
 type YouTubeVideo = {
   id: string;
@@ -36,22 +35,18 @@ export default function VideoReel({ videos, channelId }: VideoReelProps) {
     return text.substring(0, max) + "...";
   };
 
-  // Zbudowanie bezpośredniego linku do kanału YT
-  // ?sub_confirmation=1 dodatkowo wyświetli popup z propozycją subskrypcji
   const channelUrl = `https://www.youtube.com/channel/${channelId}?sub_confirmation=1`;
 
   return (
     <section className="w-full">
-      {/* Górny pasek kontrolny z tytułem, licznikiem i linkiem View all */}
       <div className="flex items-center justify-between mb-6">
-        
         <h2 className="text-sm font-semibold text-gray-900 dark:text-white">YouTube Showcase</h2>
-        
+
         <div className="flex items-center gap-4">
           <span className="text-xs font-medium text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full">
             {currentIndex + 1} / {videos.length}
           </span>
-          
+
           <a
             href={channelUrl}
             target="_blank"
@@ -59,7 +54,6 @@ export default function VideoReel({ videos, channelId }: VideoReelProps) {
             className="text-xs font-medium text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors inline-flex items-center gap-1 group"
           >
             View all
-            {/* Minimalistyczna ikonka strzałki, z lekkim odsunięciem na hover */}
             <div className="group-hover:translate-x-0.5 transition-transform">
               <ChevronRightIcon className="w-4 h-4" />
             </div>
@@ -69,7 +63,6 @@ export default function VideoReel({ videos, channelId }: VideoReelProps) {
 
       <div className="rounded-[2rem] border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
-          
           <div className="lg:col-span-2">
             <div className="relative rounded-2xl overflow-hidden aspect-video bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-inner">
               <iframe
@@ -112,7 +105,6 @@ export default function VideoReel({ videos, channelId }: VideoReelProps) {
               </button>
             </div>
           </div>
-          
         </div>
       </div>
     </section>

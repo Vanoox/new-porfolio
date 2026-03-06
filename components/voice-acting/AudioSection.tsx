@@ -9,7 +9,6 @@ type Track = {
   src: string;
 };
 
-// Pomocnicza funkcja formatująca czas (MM:SS)
 const formatTime = (time: number) => {
   if (isNaN(time)) return "00:00";
   const m = Math.floor(time / 60);
@@ -20,12 +19,12 @@ const formatTime = (time: number) => {
 export default function AudioSection({ tracks }: { tracks: Track[] }) {
   const audioRefs = useRef<Record<string, HTMLAudioElement | null>>({});
   const [playingId, setPlayingId] = useState<string | null>(null);
-  const [progresses, setProgresses] = useState<Record<string, { current: number, duration: number }>>({});
+  const [progresses, setProgresses] = useState<Record<string, { current: number; duration: number }>>({});
   const [volumes, setVolumes] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const initialVolumes: Record<string, number> = {};
-    tracks.forEach(t => initialVolumes[t.id] = 0.5);
+    tracks.forEach((t) => (initialVolumes[t.id] = 0.5));
     setVolumes(initialVolumes);
   }, [tracks]);
 
@@ -56,9 +55,9 @@ export default function AudioSection({ tracks }: { tracks: Track[] }) {
   const handleTimeUpdate = (id: string) => {
     const el = audioRefs.current[id];
     if (el) {
-      setProgresses(prev => ({
+      setProgresses((prev) => ({
         ...prev,
-        [id]: { current: el.currentTime, duration: el.duration || 0 }
+        [id]: { current: el.currentTime, duration: el.duration || 0 },
       }));
     }
   };
@@ -67,9 +66,9 @@ export default function AudioSection({ tracks }: { tracks: Track[] }) {
     const el = audioRefs.current[id];
     if (el) {
       el.currentTime = value;
-      setProgresses(prev => ({
+      setProgresses((prev) => ({
         ...prev,
-        [id]: { current: value, duration: el.duration }
+        [id]: { current: value, duration: el.duration },
       }));
     }
   };
@@ -77,13 +76,13 @@ export default function AudioSection({ tracks }: { tracks: Track[] }) {
   const handleVolumeChange = (id: string, value: number) => {
     const el = audioRefs.current[id];
     if (el) el.volume = value;
-    setVolumes(prev => ({ ...prev, [id]: value }));
+    setVolumes((prev) => ({ ...prev, [id]: value }));
   };
 
   return (
     <section className="w-full">
       <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-6">Audio Library</h2>
-      
+
       {/* Siatka 3x3 dla odtwarzaczy */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {tracks.map((t) => {
@@ -93,11 +92,10 @@ export default function AudioSection({ tracks }: { tracks: Track[] }) {
           const currentVolume = volumes[t.id] !== undefined ? volumes[t.id] : 0.5;
 
           return (
-            <div 
-              key={t.id} 
+            <div
+              key={t.id}
               className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md p-5 transition-all duration-300 flex flex-col gap-4 group"
             >
-              
               <div className="flex items-center gap-3">
                 {/* Przycisk Play/Pause */}
                 <button
@@ -106,7 +104,7 @@ export default function AudioSection({ tracks }: { tracks: Track[] }) {
                 >
                   {isPlaying ? <PauseIcon className="w-4 h-4" /> : <PlayIcon className="w-4 h-4 ml-0.5" />}
                 </button>
-                
+
                 {/* Tytuł i Czas trwania */}
                 <div className="flex flex-col flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{t.title}</p>
@@ -118,29 +116,29 @@ export default function AudioSection({ tracks }: { tracks: Track[] }) {
 
               {/* Stabilny, bezpieczny rząd kontrolny (Flexbox) */}
               <div className="flex items-center gap-4 w-full mt-1">
-                
                 {/* Pasek postępu (zajmuje całą wolną przestrzeń dzięki flex-1) */}
-                <input 
-                  type="range" 
-                  min="0" 
-                  max={duration || 100} 
-                  value={currentProgress} 
+                <input
+                  type="range"
+                  min="0"
+                  max={duration || 100}
+                  value={currentProgress}
                   onChange={(e) => handleSeek(t.id, parseFloat(e.target.value))}
                   className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:h-1.5 transition-all"
                 />
-                
+
                 {/* Kontrolka Głośności (Sztywno przypisana z prawej strony) */}
                 <div className="flex items-center gap-1.5 shrink-0 group/vol">
                   <VolumeIcon className="text-gray-400 w-3.5 h-3.5" />
-                  <input 
-                    type="range" 
-                    min="0" max="1" step="0.01" 
-                    value={currentVolume} 
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={currentVolume}
                     onChange={(e) => handleVolumeChange(t.id, parseFloat(e.target.value))}
                     className="w-12 h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gray-500 dark:accent-gray-400 hover:h-1.5 transition-all"
                   />
                 </div>
-
               </div>
 
               {/* Sam obiekt audio (Niewidoczny) */}

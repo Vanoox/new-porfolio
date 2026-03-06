@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import Link from 'next/link';
+import { ReactNode } from "react";
+import Link from "next/link";
 
 interface ServiceCardProps {
   title: string;
@@ -15,7 +15,9 @@ export default function ServiceCard({ title, description, icon, href }: ServiceC
         <div className="mb-6 text-gray-800 dark:text-gray-200 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
           {icon}
         </div>
-        <h3 className="font-semibold text-gray-900 dark:text-white text-lg mb-4 transition-colors duration-500">{title}</h3>
+        <h3 className="font-semibold text-gray-900 dark:text-white text-lg mb-4 transition-colors duration-500">
+          {title}
+        </h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed transition-colors duration-500">
           {description}
         </p>
