@@ -1,7 +1,7 @@
 import ProfileHeader from "@/components/ProfileHeader";
 import ServiceCard from "@/components/ServiceCard";
 import SocialLinks from "@/components/SocialLinks";
-import { VoiceIcon, LanguageIcon, FitnessIcon } from "@/components/Icons";
+import { Dumbbell, Mic, Languages } from "lucide-react";
 
 export default function CentralHub() {
   return (
@@ -12,24 +12,24 @@ export default function CentralHub() {
       </section>
 
       <section aria-label="My Services" className="w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 w-full">
           <ServiceCard
             title="Voice Acting"
             description="Professional voiceover for commercials, anime, and corporate needs."
             href="/voice-acting"
-            icon={<VoiceIcon />}
+            icon={<Mic />}
           />
           <ServiceCard
             title="Language Tutoring"
             description="Learn English and Japanese (日本語) with a tailored approach."
             href="/lessons"
-            icon={<LanguageIcon />}
+            icon={<Languages />}
           />
           <ServiceCard
             title="Pilates & Fitness"
             description="Achieve your physical goals with custom training and wellness plans."
             href="/training"
-            icon={<FitnessIcon />}
+            icon={<Dumbbell />}
           />
         </div>
       </section>

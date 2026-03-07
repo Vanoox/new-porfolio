@@ -1,28 +1,24 @@
-import React from 'react';
-import { InstagramIcon, YoutubeIcon, TwitchIcon, XIcon, TiktokIcon } from '@/components/Icons';
+import { InstagramIcon, YoutubeIcon, TwitchIcon, XIcon, TiktokIcon } from "@/components/Icons";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export default function SocialLinks() {
   const socials = [
-    { name: "Instagram", url: "#", icon: <InstagramIcon className="w-5 h-5" /> },
-    { name: "TikTok", url: "#", icon: <TiktokIcon className="w-5 h-5" /> },
-    { name: "YouTube", url: "#", icon: <YoutubeIcon className="w-5 h-5" /> },
-    { name: "Twitch", url: "#", icon: <TwitchIcon className="w-5 h-5" /> },
-    { name: "X", url: "#", icon: <XIcon className="w-4 h-4" /> }, // XIcon jest z natury szerszy, więc w-4 wygląda proporcjonalniej
+    { name: "Instagram", url: "#", icon: <InstagramIcon /> },
+    { name: "TikTok", url: "#", icon: <TiktokIcon /> },
+    { name: "YouTube", url: "#", icon: <YoutubeIcon /> },
+    { name: "Twitch", url: "#", icon: <TwitchIcon /> },
+    { name: "X", url: "#", icon: <XIcon /> },
   ];
 
   return (
-    <div className="flex items-center justify-center gap-4 mb-16">
+    <div className="flex items-center justify-center gap-4">
       {socials.map((social) => (
-        <a
-          key={social.name}
-          href={social.url}
-          aria-label={social.name}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-500 shadow-sm hover:shadow transition-all duration-300 hover:-translate-y-1"
-        >
-          {social.icon}
-        </a>
+        <Button variant="ghost" size="icon" key={social.name} aria-label={social.name} asChild>
+          <Link href={social.url} target="_blank" rel="noopener noreferrer">
+            {social.icon}
+          </Link>
+        </Button>
       ))}
     </div>
   );

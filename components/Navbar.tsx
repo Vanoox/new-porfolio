@@ -22,25 +22,6 @@ type NavbarProps = {
 export default function Navbar(props: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const normalizedPath = pathname.replace(/^\/[a-z]{2}(\/|$)/, "/") || "/";
-
-  const getLinkClasses = (path: string) => {
-    const isActive = normalizedPath === path || normalizedPath === `${path}/`;
-    return `transition-colors duration-500 ${
-      isActive
-        ? "text-gray-900 dark:text-white font-semibold transition-colors duration-500"
-        : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium transition-colors duration-500"
-    }`;
-  };
-
-  const getMobileLinkClasses = (path: string) => {
-    const isActive = normalizedPath === path || normalizedPath === `${path}/`;
-    return `text-2xl transition-colors duration-500 ${
-      isActive
-        ? "text-black dark:text-white font-bold transition-colors duration-500"
-        : "text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white font-medium transition-colors duration-500"
-    }`;
-  };
 
   return (
     <div className="flex items-center justify-between px-12 py-10 w-full lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
@@ -56,7 +37,9 @@ export default function Navbar(props: NavbarProps) {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
-                <Link href={`/${props.currentLang}`}>Home</Link>
+                <Link href={`/${props.currentLang}`} className="data-active-true:bg-red-600">
+                  Home
+                </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
@@ -84,9 +67,9 @@ export default function Navbar(props: NavbarProps) {
       </div>
 
       <div className="flex items-center justify-end space-x-3 md:space-x-4 shrink-0">
-        <ThemeToggle />
-
         <LanguageSwitcher currentLang={props.currentLang} />
+
+        <ThemeToggle />
 
         <div className="lg:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -110,55 +93,35 @@ export default function Navbar(props: NavbarProps) {
                 <NavigationMenuList className="flex flex-col items-center space-y-8 mt-4">
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild>
-                      <Link
-                        href={`/${props.currentLang}`}
-                        onClick={() => setIsOpen(false)}
-                        className={getMobileLinkClasses("/")}
-                      >
+                      <Link href={`/${props.currentLang}`} onClick={() => setIsOpen(false)}>
                         Home
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild>
-                      <Link
-                        href={`/${props.currentLang}/voice-acting`}
-                        onClick={() => setIsOpen(false)}
-                        className={getMobileLinkClasses("/voice-acting")}
-                      >
+                      <Link href={`/${props.currentLang}/voice-acting`} onClick={() => setIsOpen(false)}>
                         Voice Acting
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild>
-                      <Link
-                        href={`/${props.currentLang}/lessons`}
-                        onClick={() => setIsOpen(false)}
-                        className={getMobileLinkClasses("/lessons")}
-                      >
+                      <Link href={`/${props.currentLang}/lessons`} onClick={() => setIsOpen(false)}>
                         Lessons
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild>
-                      <Link
-                        href={`/${props.currentLang}/training`}
-                        onClick={() => setIsOpen(false)}
-                        className={getMobileLinkClasses("/training")}
-                      >
+                      <Link href={`/${props.currentLang}/training`} onClick={() => setIsOpen(false)}>
                         Training
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink asChild>
-                      <Link
-                        href={`/${props.currentLang}/contact`}
-                        onClick={() => setIsOpen(false)}
-                        className={getMobileLinkClasses("/contact")}
-                      >
+                      <Link href={`/${props.currentLang}/contact`} onClick={() => setIsOpen(false)}>
                         Contact
                       </Link>
                     </NavigationMenuLink>

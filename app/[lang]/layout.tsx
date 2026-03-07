@@ -23,7 +23,7 @@ export default async function Layout(props: LayoutProps<"/[lang]">) {
           <DynamicBackground />
 
           <div className="p-4 sm:p-8 lg:p-12">
-            <div className="w-full max-w-7xl bg-white dark:bg-[#1C2128] rounded-[3rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] flex flex-col relative z-10 transition-colors duration-500 overflow-hidden">
+            <div className="w-full max-w-7xl bg-background rounded-[3rem] shadow-lg flex flex-col relative z-10 transition-colors duration-500 overflow-hidden">
               <Navbar currentLang={lang} />
               <main className="flex flex-col items-center px-6 md:px-12 pb-12 w-full">{props.children}</main>
             </div>

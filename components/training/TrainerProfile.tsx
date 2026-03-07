@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function TrainerProfile() {
   return (
     <section className="flex flex-col w-full max-w-[400px] mx-auto lg:mx-0">
