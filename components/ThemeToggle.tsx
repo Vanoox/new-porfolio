@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 
 export function ThemeToggle() {
   const [isMounted, setIsMounted] = useState(false);
   const { setTheme, theme } = useTheme();
   const isDark = theme === "dark";
-  const ThemeIcon = isDark ? Sun : Moon;
+  const ThemeIcon = isDark ? SunIcon : MoonIcon;
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark");
   };

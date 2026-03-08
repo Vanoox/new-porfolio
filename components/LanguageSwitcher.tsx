@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Globe } from "lucide-react";
+import { GlobeIcon } from "@phosphor-icons/react/ssr";
 
 type LanguageSwitcherProps = {
   currentLang: string;
@@ -29,7 +29,7 @@ export function LanguageSwitcher(props: LanguageSwitcherProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full relative" aria-label="Select language">
-          <Globe />
+          <GlobeIcon />
           <span className="absolute -bottom-1.5 -right-1.5 text-[10px] font-bold bg-accent-foreground text-accent rounded px-1 uppercase tracking-wider">
             {props.currentLang}
           </span>

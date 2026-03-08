@@ -1,3 +1,4 @@
+import TitleWithDescription from "@/components/TitleWithDescription";
 import AudioSection from "@/components/voice-acting/AudioSection";
 import VideoReel from "@/components/voice-acting/VideoReel";
 
@@ -78,11 +79,8 @@ export default async function VoiceActingPage() {
   ];
 
   return (
-    <div className="w-full max-w-6xl flex flex-col flex-1 pb-4">
-      <div className="mb-10 text-center shrink-0">
-        <h1 className="text-4xl font-semibold text-gray-900 dark:text-white tracking-tight mb-4">Voice Acting</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Dedicated entirely to audio demo player & studio.</p>
-      </div>
+    <div className="w-full max-w-6xl flex flex-col items-center flex-1 pb-4">
+      <TitleWithDescription title="Voice Acting" description="Dedicated entirely to audio demo player & studio." />
 
       <div className="flex flex-col flex-1 gap-12">
         <div className="w-full">

@@ -25,7 +25,7 @@ export default function ServiceCard({ title, description, icon, href }: ServiceC
     // </Link>
 
     <Link href={href}>
-      <Card className="min-w-64">
+      <Card className="min-w-64 hover:scale-105 hover:text-primary transition-transform duration-300">
         <CardHeader className="flex flex-col justify-center items-center text-center">
           {icon}
           <CardTitle>{title}</CardTitle>
