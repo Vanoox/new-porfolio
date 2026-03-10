@@ -1,161 +1,212 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { PlayIcon, PauseIcon, VolumeIcon } from "@/components/Icons";
+import { useState, useEffect, memo } from "react";
+import { PauseIcon, PlayIcon, SpeakerLowIcon, SpeakerSimpleHighIcon, SpeakerXIcon } from "@phosphor-icons/react/ssr";
 
-type Track = {
+import { cn } from "@/lib/utils";
+import {
+  AudioPlayerButton,
+  AudioPlayerDuration,
+  AudioPlayerProgress,
+  AudioPlayerProvider,
+  AudioPlayerTime,
+  useAudioPlayer,
+} from "@/components/ui/audio-player";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+export interface Track {
   id: string;
   title: string;
   src: string;
-};
+}
 
-const formatTime = (time: number) => {
-  if (isNaN(time)) return "00:00";
-  const m = Math.floor(time / 60);
-  const s = Math.floor(time % 60);
-  return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-};
+interface AudioSectionProps {
+  tracks: Track[];
+  defaultTrackId?: string;
+}
 
-export default function AudioSection({ tracks }: { tracks: Track[] }) {
-  const audioRefs = useRef<Record<string, HTMLAudioElement | null>>({});
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const [progresses, setProgresses] = useState<Record<string, { current: number; duration: number }>>({});
-  const [volumes, setVolumes] = useState<Record<string, number>>({});
-
-  useEffect(() => {
-    const initialVolumes: Record<string, number> = {};
-    tracks.forEach((t) => (initialVolumes[t.id] = 0.5));
-    setVolumes(initialVolumes);
-  }, [tracks]);
-
-  const stopAll = () => {
-    Object.values(audioRefs.current).forEach((el) => {
-      if (el) el.pause();
-    });
-  };
-
-  const togglePlay = async (id: string) => {
-    const el = audioRefs.current[id];
-    if (!el) return;
-
-    if (playingId === id) {
-      el.pause();
-      setPlayingId(null);
-    } else {
-      stopAll();
-      try {
-        await el.play();
-        setPlayingId(id);
-      } catch {
-        setPlayingId(null);
-      }
-    }
-  };
-
-  const handleTimeUpdate = (id: string) => {
-    const el = audioRefs.current[id];
-    if (el) {
-      setProgresses((prev) => ({
-        ...prev,
-        [id]: { current: el.currentTime, duration: el.duration || 0 },
-      }));
-    }
-  };
-
-  const handleSeek = (id: string, value: number) => {
-    const el = audioRefs.current[id];
-    if (el) {
-      el.currentTime = value;
-      setProgresses((prev) => ({
-        ...prev,
-        [id]: { current: value, duration: el.duration },
-      }));
-    }
-  };
-
-  const handleVolumeChange = (id: string, value: number) => {
-    const el = audioRefs.current[id];
-    if (el) el.volume = value;
-    setVolumes((prev) => ({ ...prev, [id]: value }));
-  };
-
+export default function AudioSection({ tracks, defaultTrackId }: AudioSectionProps) {
   return (
-    <section className="w-full">
-      <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-6">Audio Library</h2>
-
-      {/* Siatka 3x3 dla odtwarzaczy */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {tracks.map((t) => {
-          const isPlaying = playingId === t.id;
-          const currentProgress = progresses[t.id]?.current || 0;
-          const duration = progresses[t.id]?.duration || 0;
-          const currentVolume = volumes[t.id] !== undefined ? volumes[t.id] : 0.5;
-
-          return (
-            <div
-              key={t.id}
-              className="rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md p-5 transition-all duration-300 flex flex-col gap-4 group"
-            >
-              <div className="flex items-center gap-3">
-                {/* Przycisk Play/Pause */}
-                <button
-                  onClick={() => togglePlay(t.id)}
-                  className="w-10 h-10 shrink-0 rounded-full bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 transition-colors flex items-center justify-center"
-                >
-                  {isPlaying ? <PauseIcon className="w-4 h-4" /> : <PlayIcon className="w-4 h-4 ml-0.5" />}
-                </button>
-
-                {/* Tytuł i Czas trwania */}
-                <div className="flex flex-col flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{t.title}</p>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
-                    {formatTime(currentProgress)} / {formatTime(duration)}
-                  </p>
-                </div>
-              </div>
-
-              {/* Stabilny, bezpieczny rząd kontrolny (Flexbox) */}
-              <div className="flex items-center gap-4 w-full mt-1">
-                {/* Pasek postępu (zajmuje całą wolną przestrzeń dzięki flex-1) */}
-                <input
-                  type="range"
-                  min="0"
-                  max={duration || 100}
-                  value={currentProgress}
-                  onChange={(e) => handleSeek(t.id, parseFloat(e.target.value))}
-                  className="flex-1 h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:h-1.5 transition-all"
-                />
-
-                {/* Kontrolka Głośności (Sztywno przypisana z prawej strony) */}
-                <div className="flex items-center gap-1.5 shrink-0 group/vol">
-                  <VolumeIcon className="text-gray-400 w-3.5 h-3.5" />
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={currentVolume}
-                    onChange={(e) => handleVolumeChange(t.id, parseFloat(e.target.value))}
-                    className="w-12 h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-gray-500 dark:accent-gray-400 hover:h-1.5 transition-all"
-                  />
-                </div>
-              </div>
-
-              {/* Sam obiekt audio (Niewidoczny) */}
-              <audio
-                ref={(node) => {
-                  audioRefs.current[t.id] = node;
-                }}
-                src={t.src}
-                preload="metadata"
-                onTimeUpdate={() => handleTimeUpdate(t.id)}
-                onLoadedMetadata={() => handleTimeUpdate(t.id)}
-                onEnded={() => setPlayingId(null)}
-              />
-            </div>
-          );
-        })}
-      </div>
-    </section>
+    <AudioPlayerProvider<Track>>
+      <AudioSectionInner tracks={tracks} defaultTrackId={defaultTrackId} />
+    </AudioPlayerProvider>
   );
 }
+
+const AudioSectionInner = ({ tracks, defaultTrackId }: AudioSectionProps) => {
+  const player = useAudioPlayer<Track>();
+
+  useEffect(() => {
+    if (defaultTrackId && !player.activeItem) {
+      const defaultTrack = tracks.find((t) => t.id === defaultTrackId);
+      if (defaultTrack) {
+      }
+    }
+  }, [defaultTrackId, tracks]);
+
+  return (
+    <Card className="mx-auto w-full overflow-hidden p-0">
+      <div className="flex flex-col lg:h-[180px] lg:flex-row">
+        <div className="bg-muted/50 flex flex-col overflow-hidden lg:h-full lg:w-64">
+          <ScrollArea className="h-48 w-full lg:h-full">
+            <div className="space-y-1 p-3">
+              {tracks.map((song, index) => (
+                <SongListItem key={song.id} song={song} trackNumber={index + 1} />
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+        <Player />
+      </div>
+    </Card>
+  );
+};
+
+const Player = () => {
+  const player = useAudioPlayer<Track>();
+  const [volume, setVolume] = useState(0.7);
+
+  useEffect(() => {
+    const audioEl = (player as any).ref?.current;
+    if (audioEl) {
+      audioEl.volume = volume;
+    }
+  }, [player, volume]);
+
+  return (
+    <div className="flex flex-1 items-center p-4 sm:p-6">
+      <div className="mx-auto w-full max-w-2xl">
+        <div className="mb-4">
+          <h3 className="text-base font-semibold sm:text-lg">{player.activeItem?.data?.title ?? "Wybierz utwór"}</h3>
+        </div>
+        <div className="flex items-center gap-3 sm:gap-4">
+          <AudioPlayerButton
+            variant="outline"
+            size="default"
+            className="h-12 w-12 shrink-0 sm:h-10 sm:w-10"
+            disabled={!player.activeItem}
+          />
+          <div className="flex flex-1 items-center gap-2 sm:gap-3">
+            <AudioPlayerTime className="text-xs tabular-nums" />
+            <AudioPlayerProgress className="flex-1" />
+            <AudioPlayerDuration className="text-xs tabular-nums" />
+
+            <div className="ml-2 hidden sm:block">
+              <VolumeSlider volume={volume} setVolume={setVolume} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const VolumeSlider = memo(
+  ({ volume, setVolume }: { volume: number; setVolume: (value: number | ((prev: number) => number)) => void }) => {
+    const [isDragging, setIsDragging] = useState(false);
+
+    const getVolumeIcon = () => {
+      if (volume === 0) return SpeakerXIcon;
+      if (volume < 0.33) return SpeakerLowIcon;
+      if (volume < 0.66) return SpeakerSimpleHighIcon;
+      return SpeakerSimpleHighIcon;
+    };
+
+    const VolumeIcon = getVolumeIcon();
+
+    return (
+      <div className="flex items-center justify-center gap-2">
+        <button
+          onClick={() => setVolume((prev: number) => (prev === 0 ? 0.7 : 0))}
+          className="text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <VolumeIcon className={cn("h-4 w-4 transition-all", volume === 0 && "text-muted-foreground/50")} />
+        </button>
+        <div
+          className="bg-foreground/10 group relative h-1 w-20 cursor-pointer rounded-full"
+          onClick={(e) => {
+            if (isDragging) return;
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            setVolume(x);
+          }}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            setIsDragging(true);
+            const sliderRect = e.currentTarget.getBoundingClientRect();
+            const initialX = Math.max(0, Math.min(1, (e.clientX - sliderRect.left) / sliderRect.width));
+            setVolume(initialX);
+
+            const handleMove = (e: MouseEvent) => {
+              const x = Math.max(0, Math.min(1, (e.clientX - sliderRect.left) / sliderRect.width));
+              setVolume(x);
+            };
+
+            const handleUp = () => {
+              setIsDragging(false);
+              document.removeEventListener("mousemove", handleMove);
+              document.removeEventListener("mouseup", handleUp);
+            };
+
+            document.addEventListener("mousemove", handleMove);
+            document.addEventListener("mouseup", handleUp);
+          }}
+        >
+          <div
+            className={cn(
+              "bg-primary absolute top-0 left-0 h-full rounded-full",
+              !isDragging && "transition-all duration-150",
+            )}
+            style={{ width: `${volume * 100}%` }}
+          />
+        </div>
+      </div>
+    );
+  },
+);
+VolumeSlider.displayName = "VolumeSlider";
+
+const SongListItem = ({ song, trackNumber }: { song: Track; trackNumber: number }) => {
+  const player = useAudioPlayer<Track>();
+  const isActive = player.isItemActive(song.id);
+  const isCurrentlyPlaying = isActive && player.isPlaying;
+
+  return (
+    <div className="group/song relative">
+      <Button
+        variant={isActive ? "secondary" : "ghost"}
+        size="sm"
+        className={cn("h-10 w-full justify-start px-3 font-normal sm:h-9 sm:px-2", isActive && "bg-secondary")}
+        onClick={() => {
+          if (isCurrentlyPlaying) {
+            player.pause();
+          } else {
+            player.play({
+              id: song.id,
+              src: song.src,
+              data: song,
+            });
+          }
+        }}
+      >
+        <div className="flex w-full items-center gap-3">
+          <div className="flex w-5 shrink-0 items-center justify-center">
+            {isCurrentlyPlaying ? (
+              <PauseIcon className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
+            ) : (
+              <>
+                <span className="text-muted-foreground/60 text-sm tabular-nums group-hover/song:invisible">
+                  {trackNumber}
+                </span>
+                <PlayIcon className="invisible absolute h-4 w-4 group-hover/song:visible sm:h-3.5 sm:w-3.5" />
+              </>
+            )}
+          </div>
+          <span className="truncate text-left text-sm">{song.title}</span>
+        </div>
+      </Button>
+    </div>
+  );
+};

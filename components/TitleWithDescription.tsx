@@ -1,15 +1,16 @@
 type Props = {
   img?: string;
   alt?: string;
+  classImg?: string;
   title: string;
   description: string;
 };
 
 export default function TitleWithDescription(props: Props) {
   return (
-    <div className="flex flex-col items-center text-center max-w-xl">
+    <div className="flex flex-col items-center text-center max-w-xl mb-2">
       {props.img && (
-        <div className="w-28 h-28 rounded-full overflow-hidden mb-6 bg-foreground/15 ring-2 ring-ring">
+        <div className={props.classImg}>
           <img src={props.img} alt={props.alt || ""} className="w-full h-full object-cover" />
         </div>
       )}

@@ -1,3 +1,6 @@
+import Link from "next/link";
+import TitleWithDescription from "../TitleWithDescription";
+
 export default function ContactInfo() {
   const socials = [
     { name: "Instagram", username: "@johnthoinn", url: "#" },
@@ -9,27 +12,19 @@ export default function ContactInfo() {
 
   return (
     <section className="flex flex-col h-full w-full">
-      <h1 className="text-4xl font-semibold text-gray-900 dark:text-white mb-4 tracking-tight">Get in touch</h1>
-
-      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-10 max-w-md">
-        Whether you want to discuss a potential voice acting project, book a private language lesson, or schedule a
-        pilates training session, I'm here to help.
-      </p>
+      <TitleWithDescription
+        title="Get in touch"
+        description="Whether you want to discuss a potential voice acting project, book a private language lesson, or schedule a
+        pilates training session, I'm here to help."
+      />
       <div className="mb-10">
-        <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-          Direct Email
-        </h3>
-        <a
-          href="mailto:hello@johnthoinn.com"
-          className="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-        >
+        <h3 className="text-lg text-foreground font-semibold mb-4">Direct Email</h3>
+        <Link href="mailto:hello@johnthoinn.com" className="text-base text-muted-foreground leading-relaxed max-w-md">
           hello@johnthoinn.com
-        </a>
+        </Link>
       </div>
       <div>
-        <h3 className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
-          Social Media
-        </h3>
+        <h3 className="text-lg text-foreground font-semibold mb-4">Social Media</h3>
         <div className="flex flex-col gap-3">
           {socials.map((social, idx) => (
             <a

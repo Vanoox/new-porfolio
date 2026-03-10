@@ -1,112 +1,68 @@
-"use client";
+import VideoReelClient from "./VideoReelClient";
 
-import { useState } from "react";
-import { ChevronRightIcon, ChevronLeftIcon } from "@/components/Icons";
-
-type YouTubeVideo = {
+export type YouTubeVideo = {
   id: string;
   youtubeId: string;
   title: string;
   description: string;
 };
 
-interface VideoReelProps {
-  videos: YouTubeVideo[];
-  channelId: string;
+async function getLatestVideos(): Promise<YouTubeVideo[]> {
+  const API_KEY = process.env.YOUTUBE_API_KEY;
+  const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
+
+  if (!API_KEY || !CHANNEL_ID) {
+    return [];
+  }
+
+  try {
+    const channelRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${API_KEY}`,
+      { next: { revalidate: 3600 } },
+    );
+    const channelData = await channelRes.json();
+
+    if (!channelData.items || channelData.items.length === 0) return [];
+    const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+    const playlistRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=5&key=${API_KEY}`,
+      { next: { revalidate: 3600 } },
+    );
+    const playlistData = await playlistRes.json();
+
+    return playlistData.items.map((item: any) => ({
+      id: item.id,
+      youtubeId: item.snippet.resourceId.videoId,
+      title: item.snippet.title,
+      description: item.snippet.description || "Brak opisu",
+    }));
+  } catch (error) {
+    return [];
+  }
 }
 
-export default function VideoReel({ videos, channelId }: VideoReelProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default async function VideoReel() {
+  const latestVideos = await getLatestVideos();
+  const channelId = process.env.YOUTUBE_CHANNEL_ID || "UC...";
 
-  if (!videos || videos.length === 0) return null;
+  const fallbackVideos: YouTubeVideo[] = [
+    {
+      id: "fallback-1",
+      youtubeId: "dQw4w9WgXcQ",
+      title: "Epic Movie Trailer Voiceover (Fallback)",
+      description:
+        "A dark and gritty voiceover session for an upcoming blockbuster trailer. Focused on deep tones and dramatic pauses.",
+    },
+    {
+      id: "fallback-2",
+      youtubeId: "jNQXAC9IVRw",
+      title: "Upbeat Commercial Sample",
+      description: "High energy, fast-paced read for a national beverage campaign.",
+    },
+  ];
 
-  const nextVideo = () => {
-    setCurrentIndex((prev) => (prev + 1) % videos.length);
-  };
+  const videosToDisplay = latestVideos.length > 0 ? latestVideos : fallbackVideos;
 
-  const prevVideo = () => {
-    setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
-  };
-
-  const activeVideo = videos[currentIndex];
-
-  const truncateDesc = (text: string, max: number) => {
-    if (text.length <= max) return text;
-    return text.substring(0, max) + "...";
-  };
-
-  const channelUrl = `https://www.youtube.com/channel/${channelId}?sub_confirmation=1`;
-
-  return (
-    <section className="w-full">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-sm font-semibold text-gray-900 dark:text-white">YouTube Showcase</h2>
-
-        <div className="flex items-center gap-4">
-          <span className="text-xs font-medium text-gray-400 bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full">
-            {currentIndex + 1} / {videos.length}
-          </span>
-
-          <a
-            href={channelUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-medium text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors inline-flex items-center gap-1 group"
-          >
-            View all
-            <div className="group-hover:translate-x-0.5 transition-transform">
-              <ChevronRightIcon className="w-4 h-4" />
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div className="rounded-[2rem] border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
-          <div className="lg:col-span-2">
-            <div className="relative rounded-2xl overflow-hidden aspect-video bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-inner">
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?rel=0`}
-                title={activeVideo.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-
-          <div className="lg:col-span-1 flex flex-col h-full justify-between">
-            <div>
-              <div key={activeVideo.id} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <p className="text-xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
-                  {activeVideo.title}
-                </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed whitespace-pre-wrap line-clamp-6">
-                  {activeVideo.description}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-              <button
-                onClick={prevVideo}
-                className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                aria-label="Previous video"
-              >
-                <ChevronLeftIcon />
-              </button>
-              <button
-                onClick={nextVideo}
-                className="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                aria-label="Next video"
-              >
-                <ChevronRightIcon />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  return <VideoReelClient videos={videosToDisplay} channelId={channelId} />;
 }
