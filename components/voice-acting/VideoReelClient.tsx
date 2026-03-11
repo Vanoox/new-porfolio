@@ -58,7 +58,7 @@ export default function VideoReelClient({ videos, channelId }: VideoReelClientPr
       </div>
 
       <Card className="w-full p-6">
-        <div className="flex flex-row gap-6">
+        <div className="flex flex-col md:flex-row gap-6">
           <div className="flex flex-w relative rounded-2xl overflow-hidden aspect-video w-full">
             <div className="relative rounded-2xl overflow-hidden aspect-video bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-inner">
               <iframe
@@ -76,12 +76,12 @@ export default function VideoReelClient({ videos, channelId }: VideoReelClientPr
               <CardTitle>{activeVideo.title}</CardTitle>
               <CardDescription className="line-clamp-6 min-h-24">{activeVideo.description}</CardDescription>
             </CardHeader>
-            <div className="flex items-center justify-between mt-4">
-              <Button variant="ghost" onClick={prevVideo}>
-                <ArrowLeftIcon size={32} />
+            <div className="flex items-center justify-end mt-4 gap-2">
+              <Button variant="outline" size="icon-lg" onClick={prevVideo}>
+                <ArrowLeftIcon />
               </Button>
-              <Button variant="ghost" onClick={nextVideo}>
-                <ArrowRightIcon size={32} />
+              <Button variant="outline" size="icon-lg" onClick={nextVideo}>
+                <ArrowRightIcon />
               </Button>
             </div>
           </div>

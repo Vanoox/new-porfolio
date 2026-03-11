@@ -13,17 +13,14 @@ export default function VoiceActingPage() {
   ];
 
   return (
-    <div className="w-full max-w-5xl flex-1 flex flex-col pt-4 pb-12">
+    <div className="w-full max-w-5xl flex-1 flex flex-col">
       <div className="w-full max-w-5xl flex items-center justify-center p-8">
         <TitleWithDescription
           title="Voice Acting"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         />
       </div>
-      <div className="">
-        <div className="mb-2">
-          <h2 className="text-sm font-semibold text-foreground">YouTube Showcase</h2>
-        </div>
+      <div className="flex flex-col gap-6 md:gap-12">
         <div className="w-full max-w-5xl mx-auto">
           <AudioSection tracks={tracks} defaultTrackId="t1" />
         </div>

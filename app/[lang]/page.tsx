@@ -5,15 +5,21 @@ import { BarbellIcon, MicrophoneIcon, TranslateIcon } from "@phosphor-icons/reac
 
 export default function CentralHub() {
   return (
-    <div className="flex flex-col items-center w-full max-w-5xl mx-auto gap-12 md:gap-16 pb-8">
+    <div className="flex flex-col items-center w-full mx-auto gap-12 md:gap-16">
       <section className="w-full flex flex-col items-center gap-8">
-        <TitleWithDescription
-          img="https://api.dicebear.com/7.x/notionists/svg?seed=John"
-          alt="John Thoinn"
-          classImg="w-28 h-28 rounded-full overflow-hidden mb-6 bg-foreground/15 ring-2 ring-ring"
-          title="John Thoinn"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        />
+        <div className="flex flex-col items-center">
+          <div className="w-28 h-28 rounded-full overflow-hidden mb-6 bg-foreground/15 ring-2 ring-ring">
+            <img
+              src="https://api.dicebear.com/7.x/notionists/svg?seed=John"
+              alt="John Thoinn"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <TitleWithDescription
+            title="John Thoinn"
+            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+          />
+        </div>
         <SocialLinks />
       </section>
 

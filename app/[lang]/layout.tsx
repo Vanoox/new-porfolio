@@ -23,7 +23,7 @@ export default async function Layout(props: LayoutProps<"/[lang]">) {
           <DynamicBackground />
 
           <div className="w-full flex flex-col items-center p-4 sm:p-8 lg:p-12">
-            <div className="w-full max-w-7xl bg-background rounded-[3rem] shadow-lg flex flex-col relative">
+            <div className="w-full max-w-5xl bg-background rounded-[3rem] shadow-lg flex flex-col relative">
               <Navbar currentLang={lang} />
               <main className="flex flex-col items-center px-6 md:px-12 pb-12 w-full">{props.children}</main>
             </div>

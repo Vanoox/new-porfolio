@@ -16,7 +16,7 @@ export default function ContactInfo() {
         title="Get in touch"
         description="Whether you want to discuss a potential voice acting project, book a private language lesson, or schedule a
         pilates training session, I'm here to help."
-      />
+      ></TitleWithDescription>
       <div className="mb-10">
         <h3 className="text-lg text-foreground font-semibold mb-4">Direct Email</h3>
         <Link href="mailto:hello@johnthoinn.com" className="text-base text-muted-foreground leading-relaxed max-w-md">

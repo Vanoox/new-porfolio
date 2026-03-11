@@ -47,20 +47,25 @@ const AudioSectionInner = ({ tracks, defaultTrackId }: AudioSectionProps) => {
   }, [defaultTrackId, tracks]);
 
   return (
-    <Card className="mx-auto w-full overflow-hidden p-0">
-      <div className="flex flex-col lg:h-[180px] lg:flex-row">
-        <div className="bg-muted/50 flex flex-col overflow-hidden lg:h-full lg:w-64">
-          <ScrollArea className="h-48 w-full lg:h-full">
-            <div className="space-y-1 p-3">
-              {tracks.map((song, index) => (
-                <SongListItem key={song.id} song={song} trackNumber={index + 1} />
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
-        <Player />
+    <>
+      <div className="flex items-center mb-2 min-h-9">
+        <h2 className="text-sm font-semibold text-foreground">YouTube Showcase</h2>
       </div>
-    </Card>
+      <Card className="mx-auto w-full overflow-hidden p-0">
+        <div className="flex flex-col lg:h-[180px] lg:flex-row">
+          <div className="bg-muted/50 flex flex-col overflow-hidden lg:h-full lg:w-64">
+            <ScrollArea className="h-48 w-full lg:h-full">
+              <div className="space-y-1 p-3">
+                {tracks.map((song, index) => (
+                  <SongListItem key={song.id} song={song} trackNumber={index + 1} />
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
+          <Player />
+        </div>
+      </Card>
+    </>
   );
 };
 
