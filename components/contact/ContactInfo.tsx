@@ -36,7 +36,7 @@ export default function ContactInfo() {
         <h3 className="text-lg text-foreground font-semibold mb-4">Social Media</h3>
         <div className="flex flex-col gap-3">
           {socials.map((social, idx) => (
-            <Link href={social.url} key={idx} className="gap-4 hover:scale-103">
+            <Link href={social.url} key={idx} className="gap-4 hover:scale-103 transition duration-300">
               <Card className="flex flex-row items-center p-4">
                 <social.icon />
                 <div className="flex flex-1 flex-row items-center justify-between">
