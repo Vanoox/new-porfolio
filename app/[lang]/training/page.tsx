@@ -19,11 +19,10 @@ export default function TrainingPage() {
           hrefButton="/contact"
           buttonDescription="Book a session"
           reverse={false}
-        >
-          <div className="rounded-2xl flex items-center justify-center">
-            <img src="/img/pt.jpg" alt="" />
-          </div>
-        </TrainingCard>
+          img="/img/pt.jpg"
+          alt=""
+        />
+
         <TrainingCard
           title="Private Pilates"
           description="A holistic approach focusing on core engagement, mobility, and injury prevention. My pilates sessions are perfect for all levels—whether you're an athlete looking to improve flexibility or a beginner wanting to build a solid foundation of posture and balance."
@@ -31,11 +30,9 @@ export default function TrainingPage() {
           hrefButton="/contact"
           buttonDescription="Book a session"
           reverse={true}
-        >
-          <div className="rounded-2xl flex items-center justify-center">
-            <img src="/img/pilates.jpg" alt="" />
-          </div>
-        </TrainingCard>
+          img="/img/pilates.jpg"
+          alt=""
+        />
       </div>
     </div>
   );

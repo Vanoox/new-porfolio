@@ -11,14 +11,23 @@ type TrainingCardProps = {
   buttonDescription: string;
   hrefButton: string;
   reverse?: boolean;
-  children: ReactNode;
+  img: string;
+  alt: string;
 };
 
 export default function TrainingCard(props: TrainingCardProps) {
   return (
-    <Card className={`flex flex-col px-6 overflow-hidden ${props.reverse ? "md:flex-row-reverse" : "md:flex-row"}`}>
-      {props.children}
-      <div className="flex flex-col gap-4 justify-center md:w-7/12">
+    <Card
+      className={`gap-0 lg:grid p-0 overflow-hidden ${
+        props.reverse ? "lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)]" : "lg:grid-cols-[minmax(0,6fr)_minmax(0,4fr)]"
+      }`}
+    >
+      <img
+        src={props.img}
+        alt={props.alt}
+        className={`w-full h-full object-cover ${props.reverse ? "lg:order-last" : ""}`}
+      />
+      <div className="flex flex-col p-6 gap-4 justify-center">
         {props.icon}
         <CardHeader className="p-0">
           <CardTitle>{props.title}</CardTitle>

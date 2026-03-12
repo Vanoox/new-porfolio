@@ -34,20 +34,6 @@ export default function ContactInfo() {
       </div>
       <div>
         <h3 className="text-lg text-foreground font-semibold mb-4">Social Media</h3>
-        {/* <div className="flex flex-col gap-3">
-          {socials.map((social, idx) => (
-            <a
-              key={idx}
-              href={social.url}
-              className="flex items-center justify-between p-4 rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.20)] hover:-translate-y-1 transition-all duration-300 group"
-            >
-              <span className="text-sm font-medium text-gray-900 dark:text-white">{social.name}</span>
-              <span className="text-xs text-gray-400 group-hover:text-blue-500 transition-colors">
-                {social.username}
-              </span>
-            </a>
-          ))}
-        </div> */}
         <div className="flex flex-col gap-3">
           {socials.map((social, idx) => (
             <Link href={social.url} key={idx} className="gap-4 hover:scale-103">
