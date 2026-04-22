@@ -2,8 +2,13 @@ import TitleWithDescription from "@/components/TitleWithDescription";
 import ServiceCard from "@/components/ServiceCard";
 import SocialLinks from "@/components/SocialLinks";
 import { BarbellIcon, MicrophoneIcon, TranslateIcon } from "@phosphor-icons/react/ssr";
+import { homeQuery } from "@/sanity/lib/queries";
+import { client } from "@/sanity/lib/client";
 
-export default function CentralHub() {
+export default async function CentralHub() {
+  const data = await client.fetch(homeQuery, { language: "pl" });
+
+  console.log(data);
   return (
     <div className="flex flex-col items-center w-full mx-auto gap-12 md:gap-16">
       <section className="w-full flex flex-col items-center gap-8">
@@ -16,7 +21,7 @@ export default function CentralHub() {
             />
           </div>
           <TitleWithDescription
-            title="John Thoinn"
+            title="Jonn Thoinn"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
           />
         </div>

@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { language } from "./language";
 
 export const lessons = defineType({
   name: "lessons",
@@ -84,11 +85,6 @@ export const lessons = defineType({
       ],
     }),
 
-    defineField({
-      name: "language",
-      type: "string",
-      readOnly: true,
-      hidden: true,
-    }),
+    language,
   ],
 });

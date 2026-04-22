@@ -40,7 +40,7 @@ export default function ContactForm() {
 
   return (
     <>
-      <Card className="w-full relative overflow-hidden rounded-[2rem] shadow-lg">
+      <Card className="w-full relative overflow-hidden rounded-4xl shadow-lg">
         <div
           className={`absolute inset-0 z-20 flex items-center justify-center transition-all duration-300 pointer-events-none bg-background/40 backdrop-blur-[2px] ${
             showSuccess ? "opacity-100 visible" : "opacity-0 invisible"

@@ -32,8 +32,8 @@ export const structure: StructureResolver = (S) =>
                     .title(language.title)
                     .child(S.document().schemaType(singleton._type).id(`${singleton.id}-${language.id}`)),
                 ),
-              )
-              .canHandleIntent((intentName, params) => intentName === "edit" && params.id.startsWith(singleton.id)),
+              ),
+            // .canHandleIntent((intentName, params) => intentName === "edit" && params.id.startsWith(singleton.id)),
           ),
       ),
       S.divider(),

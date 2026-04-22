@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { language } from "./language";
 
 export const home = defineType({
   name: "home",
@@ -36,12 +37,8 @@ export const home = defineType({
           ],
         },
       ],
+      validation: (Rule) => Rule.length(3).error("You can only have 3 cards"),
     }),
-    defineField({
-      name: "language",
-      type: "string",
-      readOnly: true,
-      hidden: false,
-    }),
+    language,
   ],
 });

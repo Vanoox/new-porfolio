@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { language } from "./language";
 
 export const voiceActing = defineType({
   name: "voiceActing",
@@ -68,11 +69,6 @@ export const voiceActing = defineType({
         }),
       ],
     }),
-    defineField({
-      name: "language",
-      type: "string",
-      readOnly: true,
-      hidden: true,
-    }),
+    language,
   ],
 });
