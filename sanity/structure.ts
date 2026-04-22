@@ -14,6 +14,8 @@ const LOCALIZED_SINGLETONS = [
   { id: "lessons", _type: "lessons", title: "Lessons" },
   { id: "training", _type: "training", title: "Training" },
   { id: "contact", _type: "contact", title: "Contact" },
+  { id: "navigation", _type: "navigation", title: "Navigation" },
+  { id: "privacy-policy", _type: "privacyPolicy", title: "Privacy Policy" },
 ];
 
 export const structure: StructureResolver = (S) =>

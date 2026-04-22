@@ -41,4 +41,11 @@ export const home = defineType({
     }),
     language,
   ],
+  preview: {
+    prepare() {
+      return {
+        title: "Home Page",
+      };
+    },
+  },
 });

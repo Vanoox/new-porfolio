@@ -61,4 +61,11 @@ export const training = defineType({
 
     language,
   ],
+  preview: {
+    prepare() {
+      return {
+        title: "Training Page",
+      };
+    },
+  },
 });

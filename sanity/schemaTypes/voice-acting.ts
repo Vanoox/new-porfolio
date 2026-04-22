@@ -71,4 +71,11 @@ export const voiceActing = defineType({
     }),
     language,
   ],
+  preview: {
+    prepare() {
+      return {
+        title: "Voice Acting Page",
+      };
+    },
+  },
 });

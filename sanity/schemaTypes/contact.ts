@@ -19,9 +19,77 @@ export const contact = defineType({
       type: "string",
     }),
     defineField({
-      name: "email",
-      type: "string",
+      type: "object",
+      name: "contactForm",
+      fields: [
+        defineField({
+          name: "formTitle",
+          type: "string",
+        }),
+        defineField({
+          type: "object",
+          name: "nameField",
+          fields: [
+            defineField({
+              name: "name",
+              type: "string",
+            }),
+            defineField({
+              name: "namePlaceholder",
+              type: "string",
+            }),
+          ],
+        }),
+        defineField({
+          type: "object",
+          name: "emailField",
+          fields: [
+            defineField({
+              name: "email",
+              type: "string",
+            }),
+            defineField({
+              name: "emailPlaceholder",
+              type: "string",
+            }),
+          ],
+        }),
+        defineField({
+          name: "topicField",
+          type: "array",
+          of: [
+            {
+              type: "string",
+            },
+          ],
+        }),
+        defineField({
+          type: "object",
+          name: "messageField",
+          fields: [
+            defineField({
+              name: "message",
+              type: "string",
+            }),
+            defineField({
+              name: "messagePlaceholder",
+              type: "string",
+            }),
+          ],
+        }),
+        defineField({
+          name: "submitButton",
+          type: "string",
+        }),
+      ],
     }),
     language,
   ],
+  preview: {
+    prepare() {
+      return {
+        title: "Contact Page",
+      };
+    },
+  },
 });

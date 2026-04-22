@@ -87,4 +87,11 @@ export const lessons = defineType({
 
     language,
   ],
+  preview: {
+    prepare() {
+      return {
+        title: "Lessons Page",
+      };
+    },
+  },
 });
