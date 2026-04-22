@@ -15,16 +15,39 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type Contact = {
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type VoiceActing = {
   _id: string;
-  _type: "contact";
+  _type: "voiceActing";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   mainTitle?: string;
   mainDescription?: string;
-  emailTitle?: string;
-  email?: string;
+  audioSection?: {
+    titleAudioSection?: string;
+    audioFiles?: Array<{
+      audioName?: string;
+      file?: {
+        asset?: SanityFileAssetReference;
+        media?: unknown;
+        _type: "file";
+      };
+      _type: "audio";
+      _key: string;
+    }>;
+  };
+  videoSection?: {
+    titleVideoSection?: string;
+    viewYTButton?: string;
+    videoBackup?: Array<string>;
+  };
   language?: "pl" | "en" | "jp";
 };
 
@@ -86,6 +109,37 @@ export type SanityImageHotspot = {
   width?: number;
 };
 
+export type Settings = {
+  _id: string;
+  _type: "settings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  contactEmail?: string;
+  socials?: {
+    instagram?: {
+      url?: string;
+      handle?: string;
+    };
+    tiktok?: {
+      url?: string;
+      handle?: string;
+    };
+    youtube?: {
+      url?: string;
+      handle?: string;
+    };
+    twitch?: {
+      url?: string;
+      handle?: string;
+    };
+    x?: {
+      url?: string;
+      handle?: string;
+    };
+  };
+};
+
 export type Lessons = {
   _id: string;
   _type: "lessons";
@@ -123,42 +177,6 @@ export type Lessons = {
   language?: "pl" | "en" | "jp";
 };
 
-export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-};
-
-export type VoiceActing = {
-  _id: string;
-  _type: "voiceActing";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  mainTitle?: string;
-  mainDescription?: string;
-  audioSection?: {
-    titleAudioSection?: string;
-    audioFiles?: Array<{
-      audioName?: string;
-      file?: {
-        asset?: SanityFileAssetReference;
-        media?: unknown;
-        _type: "file";
-      };
-      _type: "audio";
-      _key: string;
-    }>;
-  };
-  videoSection?: {
-    titleVideoSection?: string;
-    viewYTButton?: string;
-    videoBackup?: Array<string>;
-  };
-  language?: "pl" | "en" | "jp";
-};
-
 export type Home = {
   _id: string;
   _type: "home";
@@ -180,6 +198,19 @@ export type Home = {
     _type: "card";
     _key: string;
   }>;
+  language?: "pl" | "en" | "jp";
+};
+
+export type Contact = {
+  _id: string;
+  _type: "contact";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  mainTitle?: string;
+  mainDescription?: string;
+  emailTitle?: string;
+  email?: string;
   language?: "pl" | "en" | "jp";
 };
 
@@ -287,15 +318,16 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
-  | Contact
+  | SanityFileAssetReference
+  | VoiceActing
   | SanityImageAssetReference
   | Training
   | SanityImageCrop
   | SanityImageHotspot
+  | Settings
   | Lessons
-  | SanityFileAssetReference
-  | VoiceActing
   | Home
+  | Contact
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -305,6 +337,40 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint
   | Slug;
+
+// Source: sanity/lib/queries.ts
+// Variable: settingsQuery
+// Query: *[_type == "settings"][0]
+export type SettingsQueryResult = {
+  _id: string;
+  _type: "settings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  contactEmail?: string;
+  socials?: {
+    instagram?: {
+      url?: string;
+      handle?: string;
+    };
+    tiktok?: {
+      url?: string;
+      handle?: string;
+    };
+    youtube?: {
+      url?: string;
+      handle?: string;
+    };
+    twitch?: {
+      url?: string;
+      handle?: string;
+    };
+    x?: {
+      url?: string;
+      handle?: string;
+    };
+  };
+} | null;
 
 // Source: sanity/lib/queries.ts
 // Variable: homeQuery
@@ -324,6 +390,7 @@ export type HomeQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    '*[_type == "settings"][0]': SettingsQueryResult;
     '\n  *[_type == "home" && language == $language][0]{\n    "mainImageUrl": mainImage.asset->url,\n    mainTitle,\n    mainDescription,\n    cardsHome[]{\n      cardTitile,\n      cardDescription\n    },\n    language\n  }\n': HomeQueryResult;
   }
 }

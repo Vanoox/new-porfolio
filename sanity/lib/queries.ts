@@ -1,6 +1,8 @@
-import { groq } from "next-sanity";
+import { defineQuery } from "next-sanity";
 
-export const homeQuery = groq`
+export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
+
+export const homeQuery = defineQuery(`
   *[_type == "home" && language == $language][0]{
     "mainImageUrl": mainImage.asset->url,
     mainTitle,
@@ -11,4 +13,4 @@ export const homeQuery = groq`
     },
     language
   }
-`;
+`);

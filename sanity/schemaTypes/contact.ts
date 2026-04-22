@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { language } from "./language";
+import { language } from "./fields/language";
 
 export const contact = defineType({
   name: "contact",

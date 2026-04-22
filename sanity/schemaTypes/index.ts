@@ -1,10 +1,11 @@
 import { type SchemaTypeDefinition } from "sanity";
-import { home } from "./home";
-import { voiceActing } from "./voice-acting";
-import { lessons } from "./lessons";
-import { training } from "./training";
 import { contact } from "./contact";
+import { home } from "./home";
+import { lessons } from "./lessons";
+import { settings } from "@/sanity/schemaTypes/settings";
+import { training } from "./training";
+import { voiceActing } from "./voice-acting";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [home, voiceActing, lessons, training, contact],
+  types: [contact, home, lessons, settings, training, voiceActing],
 };
