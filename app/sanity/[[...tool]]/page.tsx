@@ -9,10 +9,6 @@
 
 import { NextStudio } from "next-sanity/studio";
 import config from "../../../sanity.config";
-import { settings } from "../../../sanity/schemaTypes/settings";
-
-export const schemaTypes = [settings];
-
 export const dynamic = "force-static";
 
 export { metadata, viewport } from "next-sanity/studio";

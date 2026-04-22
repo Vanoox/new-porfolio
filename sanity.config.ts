@@ -32,7 +32,7 @@ export default defineConfig({
         { id: "en", title: "English" },
         { id: "jp", title: "Japanese" },
       ],
-      schemaTypes: ["post"],
+      schemaTypes: ["home", "voiceActing", "lessons", "training", "contact"],
     }),
   ],
 });

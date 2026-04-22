@@ -7,10 +7,8 @@ const defaultLocale = "en";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Uproszczone i pewniejsze sprawdzanie
   const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
 
-  // Jeśli język JUŻ jest w URL, pozwól zapytaniu przejść dalej bez ruszania go!
   if (pathnameHasLocale) {
     return NextResponse.next();
   }
@@ -19,7 +17,6 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // W przeciwnym razie wymuś domyślny język
   request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
   return NextResponse.redirect(request.nextUrl);
 }
