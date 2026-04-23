@@ -56,11 +56,21 @@ export const contact = defineType({
         }),
         defineField({
           name: "topicField",
-          type: "array",
-          of: [
-            {
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
               type: "string",
-            },
+            }),
+            defineField({
+              name: "topicContent",
+              type: "array",
+              of: [
+                {
+                  type: "string",
+                },
+              ],
+            }),
           ],
         }),
         defineField({
@@ -94,6 +104,24 @@ export const contact = defineType({
               type: "string",
             }),
           ],
+        }),
+      ],
+    }),
+    defineField({
+      name: "confirmationMessage",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          type: "string",
+        }),
+        defineField({
+          name: "description",
+          type: "text",
+        }),
+        defineField({
+          name: "sendingMessage",
+          type: "string",
         }),
       ],
     }),

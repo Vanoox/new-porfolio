@@ -1,36 +1,44 @@
 import TrainingCard from "@/components/training/TrainingCard";
 import { BarbellIcon, PersonSimpleTaiChiIcon } from "@phosphor-icons/react/dist/ssr";
 import TitleWithDescription from "@/components/TitleWithDescription";
+import { trainingQuery } from "@/sanity/lib/queries";
+import { client } from "@/sanity/lib/client";
+import { notFound } from "next/navigation";
 
-export default function TrainingPage() {
+export default async function TrainingPage(props: PageProps<"/[lang]">) {
+  const params = await props.params;
+
+  const page = await client.fetch(trainingQuery, { language: params.lang });
+
+  if (page === null) {
+    notFound();
+  }
+
   return (
     <div className="w-full flex-1 flex flex-col gap-6">
       <div className="flex justify-center">
-        <TitleWithDescription
-          title="Training & Wellness"
-          description="Unlock your body’s potential with a professional approach to fitness. Whether you need an intense personal training regimen to build strength or mindful pilates sessions to improve flexibility and core stability."
-        />
+        <TitleWithDescription title={page.mainTitle ?? ""} description={page.mainDescription ?? ""} />
       </div>
       <div className="flex flex-col gap-6">
         <TrainingCard
-          title="1-on-1 Personal Training"
-          description="Tailored workout plans designed to match your specific goals—from weight loss and muscle building to functional strength. Each session focuses on proper form, progressive overload, and continuous motivation to ensure you get the most out of your time in the gym."
+          title={page.personalTreningCard?.title ?? ""}
+          description={page.personalTreningCard?.description ?? ""}
           icon={<BarbellIcon size={42} />}
           hrefButton="/contact"
-          buttonDescription="Book a session"
+          buttonDescription={page.personalTreningCard?.button ?? ""}
           reverse={false}
-          img="/img/pt.jpg"
+          img={page.personalTreningCard?.image?.asset?.url ?? ""}
           alt=""
         />
 
         <TrainingCard
-          title="Private Pilates"
-          description="A holistic approach focusing on core engagement, mobility, and injury prevention. My pilates sessions are perfect for all levels—whether you're an athlete looking to improve flexibility or a beginner wanting to build a solid foundation of posture and balance."
+          title={page.pilatesTreningCard?.title ?? ""}
+          description={page.pilatesTreningCard?.description ?? ""}
           icon={<PersonSimpleTaiChiIcon size={42} />}
           hrefButton="/contact"
-          buttonDescription="Book a session"
+          buttonDescription={page.pilatesTreningCard?.button ?? ""}
           reverse={true}
-          img="/img/pilates.jpg"
+          img={page.pilatesTreningCard?.image?.asset?.url ?? ""}
           alt=""
         />
       </div>

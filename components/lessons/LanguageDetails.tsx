@@ -1,16 +1,20 @@
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import TitleWithDescription from "../TitleWithDescription";
 
-export default function LanguageDetails() {
+type Props = {
+  mainDescription: string;
+  mainTitle: string;
+  englishCardTitle: string;
+  englishCardDescription: string;
+  japaneseCardTitle: string;
+  japaneseCardDescription: string;
+};
+
+export default function LanguageDetails(props: Props) {
   return (
     <section className="flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-between gap-6 md:gap-8">
-        <TitleWithDescription
-          description="I offer dedicated 1-on-1 tutoring sessions focused on practical conversation, pronunciation, and
-          industry-specific vocabulary. I offer dedicated 1-on-1 tutoring sessions focused on practical conversation, pronunciation, and
-          industry-specific vocabulary."
-          title="What I Teach"
-        />
+        <TitleWithDescription description={props.mainDescription} title={props.mainTitle} />
         <Card>
           <CardContent className="flex items-start gap-6">
             <div className="size-10 md:size-12 lg:size-16 shrink-0 rounded-full overflow-hidden flex items-center justify-center">
@@ -29,11 +33,8 @@ export default function LanguageDetails() {
               </svg>
             </div>
             <div className="flex flex-col gap-2">
-              <CardTitle>English</CardTitle>
-              <CardDescription>
-                From everyday conversational English to advanced business negotiations and esports commentary
-                terminology.
-              </CardDescription>
+              <CardTitle>{props.englishCardTitle}</CardTitle>
+              <CardDescription>{props.englishCardDescription}</CardDescription>
             </div>
           </CardContent>
         </Card>
@@ -59,11 +60,8 @@ export default function LanguageDetails() {
               </svg>
             </div>
             <div className="flex flex-col gap-2">
-              <CardTitle>Japanese (日本語)</CardTitle>
-              <CardDescription>
-                Master the basics of Hiragana and Katakana, up to fluent communication required in the Japanese
-                entertainment industry.
-              </CardDescription>
+              <CardTitle>{props.englishCardTitle}</CardTitle>
+              <CardDescription>{props.englishCardDescription}</CardDescription>
             </div>
           </CardContent>
         </Card>

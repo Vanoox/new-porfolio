@@ -67,7 +67,7 @@ export const lessons = defineType({
       ],
     }),
     defineField({
-      name: "contactard",
+      name: "contactCard",
       type: "object",
       fields: [
         defineField({

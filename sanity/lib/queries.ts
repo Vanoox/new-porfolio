@@ -14,3 +14,134 @@ export const homeQuery = defineQuery(`
     language
   }
 `);
+
+export const voiceActingQuery = defineQuery(`
+  *[_type == "voiceActing" && language == $language][0]{
+    _id,
+    mainTitle,
+    mainDescription,
+
+    audioSection{
+      titleAudioSection,
+      selectSong,
+      audioFiles[]{
+        'id': _key,
+        'title': audioName,
+        "src": file.asset->url,
+      }
+    },
+
+    videoSection{
+      titleVideoSection,
+      viewYTButton,
+    },
+    
+    language
+  }
+`);
+
+export const lessonsQuery = defineQuery(`*[_type == "lessons" && language == $language][0] {
+  _id,
+  leftSide {
+    title,
+    description,
+    image {
+      asset->{
+        url,
+        metadata
+      }
+    }
+  },
+  rightSide {
+    title,
+    description,
+    englishCard {
+      title,
+      description
+    },
+    japaneseCard {
+      title,
+      description
+    }
+  },
+  contactCard {
+    title,
+    description,
+    nameButton
+  },
+  language
+}`);
+
+export const trainingQuery = defineQuery(`*[_type == "training" && language == $language][0] {
+  _id,
+  mainTitle,
+  mainDescription,
+  personalTreningCard {
+    title,
+    description,
+    button,
+    image {
+      asset->{
+        url,
+        metadata
+      }
+    }
+  },
+  pilatesTreningCard {
+    title,
+    description,
+    button,
+    image {
+      asset->{
+        url,
+        metadata
+      }
+    }
+  },
+  language
+}`);
+
+export const contactQuery = defineQuery(`*[_type == "contact" && language == $language][0] {
+  _id,
+  mainTitle,
+  mainDescription,
+  emailTitle,
+  contactForm {
+    formTitle,
+    nameField {
+      name,
+      namePlaceholder
+    },
+    emailField {
+      email,
+      emailPlaceholder
+    },
+    topicField {
+      title,
+      topicContent
+    },
+    messageField {
+      message,
+      messagePlaceholder
+    },
+    submitButton,
+    policyInforamation {
+      policyText,
+      linkButton
+    }
+  },
+  confirmationMessage {
+    title,
+    description,
+    sendingMessage
+  },
+  language
+}`);
+
+export const privacyPolicyQuery = defineQuery(`*[_type == "privacyPolicy"&& language == $language][0] {
+  _id,
+  mainTitle,
+  policyContent,
+  confirmedButton,
+  language
+}`);

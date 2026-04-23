@@ -16,7 +16,28 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export default function ContactForm() {
+type Props = {
+  confirmTitle: string;
+  confirmDescription: string;
+  mainTitle: string;
+  name: string;
+  namePlaceholder: string;
+  email: string;
+  emailPlaceholder: string;
+  topic: string;
+  topicField: string[];
+  message: string;
+  messagePlaceholder: string;
+  sendingMessage: string;
+  sendButton: string;
+  policyText: string;
+  policyLink: string;
+  policyTitle: string;
+  policyDescription: string;
+  policyAgreeButton: string;
+};
+
+export default function ContactForm(props: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
@@ -65,68 +86,64 @@ export default function ContactForm() {
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </div>
-            <h4 className="text-xl font-bold text-foreground mb-2">Message Sent!</h4>
-            <p className="text-sm text-muted-foreground">
-              Thank you for reaching out.
-              <br />
-              I'll get back to you shortly.
-            </p>
+            <h4 className="text-xl font-bold text-foreground mb-2">{props.confirmTitle}</h4>
+            <p className="text-sm text-muted-foreground">{props.confirmDescription}</p>
           </div>
         </div>
 
         <CardHeader className={`transition-opacity duration-300 ${showSuccess ? "opacity-30" : "opacity-100"}`}>
-          <CardTitle className="text-xl font-semibold">Send a message</CardTitle>
+          <CardTitle className="text-xl font-semibold">{props.mainTitle}</CardTitle>
         </CardHeader>
 
         <CardContent className={`transition-opacity duration-300 ${showSuccess ? "opacity-30" : "opacity-100"}`}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <Field>
-              <FieldLabel htmlFor="name">Name</FieldLabel>
+              <FieldLabel htmlFor="name">{props.name}</FieldLabel>
               <Input
                 type="text"
                 id="name"
                 required
                 disabled={isSubmitting || showSuccess}
-                placeholder="John Doe"
+                placeholder={props.namePlaceholder}
                 className="rounded-xl px-4 py-3"
               />
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="email">Email address</FieldLabel>
+              <FieldLabel htmlFor="email">{props.email}</FieldLabel>
               <Input
                 type="email"
                 id="email"
                 required
                 disabled={isSubmitting || showSuccess}
-                placeholder="john@example.com"
+                placeholder={props.emailPlaceholder}
                 className="rounded-xl px-4 py-3"
               />
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="topic">Topic</FieldLabel>
+              <FieldLabel htmlFor="topic">{props.topic}</FieldLabel>
               <Select disabled={isSubmitting || showSuccess} defaultValue="voice">
                 <SelectTrigger id="topic" className="rounded-xl px-4 py-3 h-auto">
                   <SelectValue placeholder="Select topic" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="voice">Voice Acting</SelectItem>
-                  <SelectItem value="language">Language Tutoring</SelectItem>
-                  <SelectItem value="pilates">Pilates & Fitness</SelectItem>
-                  <SelectItem value="other">Other Inquiry</SelectItem>
+                  <SelectItem value="voice">{props.topicField}</SelectItem>
+                  <SelectItem value="language">{props.topicField}</SelectItem>
+                  <SelectItem value="pilates">{props.topicField}</SelectItem>
+                  <SelectItem value="other">{props.topicField}</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="message">Message</FieldLabel>
+              <FieldLabel htmlFor="message">{props.message}</FieldLabel>
               <Textarea
                 id="message"
                 required
                 rows={4}
                 disabled={isSubmitting || showSuccess}
-                placeholder="Tell me about your project..."
+                placeholder={props.messagePlaceholder}
                 className="resize-none rounded-xl px-4 py-3"
               />
             </Field>
@@ -158,21 +175,21 @@ export default function ContactForm() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Sending...
+                  {props.sendingMessage}
                 </>
               ) : (
-                "Send Message"
+                props.sendButton
               )}
             </Button>
 
             <p className="text-center text-xs text-muted-foreground mt-1">
-              By sending this message, you agree to the{" "}
+              {props.policyText}{" "}
               <button
                 type="button"
                 onClick={() => setIsPrivacyOpen(true)}
                 className="font-medium text-foreground underline underline-offset-2 hover:text-primary transition-colors"
               >
-                Privacy Policy
+                {props.policyLink}
               </button>
               .
             </p>
@@ -183,13 +200,13 @@ export default function ContactForm() {
       <Dialog open={isPrivacyOpen} onOpenChange={setIsPrivacyOpen}>
         <DialogContent className="max-w-2xl max-h-[85vh] flex flex-col gap-0 p-0 sm:rounded-3xl overflow-hidden">
           <DialogHeader className="px-6 sm:px-8 py-5 border-b border-border bg-background shrink-0">
-            <DialogTitle className="text-lg font-semibold text-foreground">Privacy Policy</DialogTitle>
+            <DialogTitle className="text-lg font-semibold text-foreground">{props.policyTitle}</DialogTitle>
             <DialogDescription className="sr-only">Privacy Policy details and terms.</DialogDescription>
           </DialogHeader>
 
           <div className="p-6 sm:px-8 sm:py-6 overflow-y-auto overscroll-contain">
             <div className="prose prose-sm max-w-none text-muted-foreground">
-              <h4 className="text-foreground font-semibold text-base mb-2">1. Introduction</h4>
+              {/* <h4 className="text-foreground font-semibold text-base mb-2">1. Introduction</h4>
               <p className="mb-5">
                 Your privacy is important to me. This Privacy Policy explains how I collect, use, and protect your
                 personal information when you contact me through this website.
@@ -221,13 +238,14 @@ export default function ContactForm() {
                 You have the right to request the deletion of any personal data I hold about you. If you wish to have
                 your previous communications deleted from my inbox, simply send a direct email to{" "}
                 <em>hello@johnthoinn.com</em>.
-              </p>
+              </p> */}
+              {props.policyDescription}
             </div>
           </div>
 
           <DialogFooter className="px-6 py-4 sm:px-8 border-t border-border bg-muted/30 shrink-0">
             <Button onClick={() => setIsPrivacyOpen(false)} className="rounded-xl px-6 w-full sm:w-auto">
-              I Understand
+              {props.policyAgreeButton}
             </Button>
           </DialogFooter>
         </DialogContent>

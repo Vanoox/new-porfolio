@@ -23,6 +23,10 @@ export const voiceActing = defineType({
           type: "string",
         }),
         defineField({
+          name: "selectSong",
+          type: "string",
+        }),
+        defineField({
           name: "audioFiles",
           type: "array",
           of: [
@@ -56,16 +60,6 @@ export const voiceActing = defineType({
         defineField({
           name: "viewYTButton",
           type: "string",
-        }),
-        defineField({
-          name: "videoBackup",
-          type: "array",
-          of: [
-            defineField({
-              name: "video",
-              type: "url",
-            }),
-          ],
         }),
       ],
     }),

@@ -17,9 +17,11 @@ export type YouTubeVideo = {
 interface VideoReelClientProps {
   videos: YouTubeVideo[];
   channelId: string;
+  title: string;
+  textButton: string;
 }
 
-export default function VideoReelClient({ videos, channelId }: VideoReelClientProps) {
+export default function VideoReelClient({ videos, channelId, title, textButton }: VideoReelClientProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!videos || videos.length === 0) return null;
@@ -44,14 +46,14 @@ export default function VideoReelClient({ videos, channelId }: VideoReelClientPr
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-semibold text-foreground">YouTube Showcase</h2>
+        <h2 className="text-sm font-semibold text-foreground">{title}</h2>
         <div className="flex items-center gap-4">
           <Badge variant="secondary">
             {currentIndex + 1} / {videos.length}
           </Badge>
           <Link href={channelUrl}>
             <Button variant="ghost">
-              View all <ArrowRightIcon size={18} />
+              {textButton} <ArrowRightIcon size={18} />
             </Button>
           </Link>
         </div>

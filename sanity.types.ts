@@ -15,6 +15,52 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type PrivacyPolicy = {
+  _id: string;
+  _type: "privacyPolicy";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  mainTitle?: string;
+  policyContent?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  confirmedButton?: string;
+  language?: "pl" | "en" | "jp";
+};
+
+export type Navigation = {
+  _id: string;
+  _type: "navigation";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  navigations?: {
+    home?: string;
+    voiceActing?: string;
+    lessons?: string;
+    training?: string;
+    contact?: string;
+  };
+  languageSwitcher?: string;
+  language?: "pl" | "en" | "jp";
+};
+
 export type SanityFileAssetReference = {
   _ref: string;
   _type: "reference";
@@ -32,6 +78,7 @@ export type VoiceActing = {
   mainDescription?: string;
   audioSection?: {
     titleAudioSection?: string;
+    selectSong?: string;
     audioFiles?: Array<{
       audioName?: string;
       file?: {
@@ -46,7 +93,6 @@ export type VoiceActing = {
   videoSection?: {
     titleVideoSection?: string;
     viewYTButton?: string;
-    videoBackup?: Array<string>;
   };
   language?: "pl" | "en" | "jp";
 };
@@ -138,6 +184,14 @@ export type Settings = {
       handle?: string;
     };
   };
+  webstieName?: string;
+  websiteFavicon?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
 };
 
 export type Lessons = {
@@ -169,7 +223,7 @@ export type Lessons = {
       description?: string;
     };
   };
-  contactard?: {
+  contactCard?: {
     title?: string;
     description?: string;
     nameButton?: string;
@@ -210,7 +264,35 @@ export type Contact = {
   mainTitle?: string;
   mainDescription?: string;
   emailTitle?: string;
-  email?: string;
+  contactForm?: {
+    formTitle?: string;
+    nameField?: {
+      name?: string;
+      namePlaceholder?: string;
+    };
+    emailField?: {
+      email?: string;
+      emailPlaceholder?: string;
+    };
+    topicField?: {
+      title?: string;
+      topicContent?: Array<string>;
+    };
+    messageField?: {
+      message?: string;
+      messagePlaceholder?: string;
+    };
+    submitButton?: string;
+    policyInforamation?: {
+      policyText?: string;
+      linkButton?: string;
+    };
+  };
+  confirmationMessage?: {
+    title?: string;
+    description?: string;
+    sendingMessage?: string;
+  };
   language?: "pl" | "en" | "jp";
 };
 
@@ -318,6 +400,8 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
+  | PrivacyPolicy
+  | Navigation
   | SanityFileAssetReference
   | VoiceActing
   | SanityImageAssetReference
@@ -370,6 +454,14 @@ export type SettingsQueryResult = {
       handle?: string;
     };
   };
+  webstieName?: string;
+  websiteFavicon?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
 } | null;
 
 // Source: sanity/lib/queries.ts
@@ -386,11 +478,174 @@ export type HomeQueryResult = {
   language: "en" | "jp" | "pl" | null;
 } | null;
 
+// Source: sanity/lib/queries.ts
+// Variable: voiceActingQuery
+// Query: *[_type == "voiceActing" && language == $language][0]{    _id,    mainTitle,    mainDescription,    audioSection{      titleAudioSection,      selectSong,      audioFiles[]{        'id': _key,        'title': audioName,        "src": file.asset->url,      }    },    videoSection{      titleVideoSection,      viewYTButton,    },        language  }
+export type VoiceActingQueryResult = {
+  _id: string;
+  mainTitle: string | null;
+  mainDescription: string | null;
+  audioSection: {
+    titleAudioSection: string | null;
+    selectSong: string | null;
+    audioFiles: Array<{
+      id: string;
+      title: string | null;
+      src: string | null;
+    }> | null;
+  } | null;
+  videoSection: {
+    titleVideoSection: string | null;
+    viewYTButton: string | null;
+  } | null;
+  language: "en" | "jp" | "pl" | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: lessonsQuery
+// Query: *[_type == "lessons" && language == $language][0] {  _id,  leftSide {    title,    description,    image {      asset->{        url,        metadata      }    }  },  rightSide {    title,    description,    englishCard {      title,      description    },    japaneseCard {      title,      description    }  },  contactCard {    title,    description,    nameButton  },  language}
+export type LessonsQueryResult = {
+  _id: string;
+  leftSide: {
+    title: string | null;
+    description: string | null;
+    image: {
+      asset: {
+        url: string | null;
+        metadata: SanityImageMetadata | null;
+      } | null;
+    } | null;
+  } | null;
+  rightSide: {
+    title: string | null;
+    description: string | null;
+    englishCard: {
+      title: string | null;
+      description: string | null;
+    } | null;
+    japaneseCard: {
+      title: string | null;
+      description: string | null;
+    } | null;
+  } | null;
+  contactCard: {
+    title: string | null;
+    description: string | null;
+    nameButton: string | null;
+  } | null;
+  language: "en" | "jp" | "pl" | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: trainingQuery
+// Query: *[_type == "training" && language == $language][0] {  _id,  mainTitle,  mainDescription,  personalTreningCard {    title,    description,    button,    image {      asset->{        url,        metadata      }    }  },  pilatesTreningCard {    title,    description,    button,    image {      asset->{        url,        metadata      }    }  },  language}
+export type TrainingQueryResult = {
+  _id: string;
+  mainTitle: string | null;
+  mainDescription: string | null;
+  personalTreningCard: {
+    title: string | null;
+    description: string | null;
+    button: string | null;
+    image: {
+      asset: {
+        url: string | null;
+        metadata: SanityImageMetadata | null;
+      } | null;
+    } | null;
+  } | null;
+  pilatesTreningCard: {
+    title: string | null;
+    description: string | null;
+    button: string | null;
+    image: {
+      asset: {
+        url: string | null;
+        metadata: SanityImageMetadata | null;
+      } | null;
+    } | null;
+  } | null;
+  language: "en" | "jp" | "pl" | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: contactQuery
+// Query: *[_type == "contact" && language == $language][0] {  _id,  mainTitle,  mainDescription,  emailTitle,  contactForm {    formTitle,    nameField {      name,      namePlaceholder    },    emailField {      email,      emailPlaceholder    },    topicField {      title,      topicContent    },    messageField {      message,      messagePlaceholder    },    submitButton,    policyInforamation {      policyText,      linkButton    }  },  confirmationMessage {    title,    description,    sendingMessage  },  language}
+export type ContactQueryResult = {
+  _id: string;
+  mainTitle: string | null;
+  mainDescription: string | null;
+  emailTitle: string | null;
+  contactForm: {
+    formTitle: string | null;
+    nameField: {
+      name: string | null;
+      namePlaceholder: string | null;
+    } | null;
+    emailField: {
+      email: string | null;
+      emailPlaceholder: string | null;
+    } | null;
+    topicField: {
+      title: string | null;
+      topicContent: Array<string> | null;
+    } | null;
+    messageField: {
+      message: string | null;
+      messagePlaceholder: string | null;
+    } | null;
+    submitButton: string | null;
+    policyInforamation: {
+      policyText: string | null;
+      linkButton: string | null;
+    } | null;
+  } | null;
+  confirmationMessage: {
+    title: string | null;
+    description: string | null;
+    sendingMessage: string | null;
+  } | null;
+  language: "en" | "jp" | "pl" | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: privacyPolicyQuery
+// Query: *[_type == "privacyPolicy"&& language == $language][0] {  _id,  mainTitle,  policyContent,  confirmedButton,  language}
+export type PrivacyPolicyQueryResult = {
+  _id: string;
+  mainTitle: string | null;
+  policyContent: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  confirmedButton: string | null;
+  language: "en" | "jp" | "pl" | null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "settings"][0]': SettingsQueryResult;
     '\n  *[_type == "home" && language == $language][0]{\n    "mainImageUrl": mainImage.asset->url,\n    mainTitle,\n    mainDescription,\n    cardsHome[]{\n      cardTitile,\n      cardDescription\n    },\n    language\n  }\n': HomeQueryResult;
+    "\n  *[_type == \"voiceActing\" && language == $language][0]{\n    _id,\n    mainTitle,\n    mainDescription,\n\n    audioSection{\n      titleAudioSection,\n      selectSong,\n      audioFiles[]{\n        'id': _key,\n        'title': audioName,\n        \"src\": file.asset->url,\n      }\n    },\n\n    videoSection{\n      titleVideoSection,\n      viewYTButton,\n    },\n    \n    language\n  }\n": VoiceActingQueryResult;
+    '*[_type == "lessons" && language == $language][0] {\n  _id,\n  leftSide {\n    title,\n    description,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  rightSide {\n    title,\n    description,\n    englishCard {\n      title,\n      description\n    },\n    japaneseCard {\n      title,\n      description\n    }\n  },\n  contactCard {\n    title,\n    description,\n    nameButton\n  },\n  language\n}': LessonsQueryResult;
+    '*[_type == "training" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  personalTreningCard {\n    title,\n    description,\n    button,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  pilatesTreningCard {\n    title,\n    description,\n    button,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  language\n}': TrainingQueryResult;
+    '*[_type == "contact" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  emailTitle,\n  contactForm {\n    formTitle,\n    nameField {\n      name,\n      namePlaceholder\n    },\n    emailField {\n      email,\n      emailPlaceholder\n    },\n    topicField {\n      title,\n      topicContent\n    },\n    messageField {\n      message,\n      messagePlaceholder\n    },\n    submitButton,\n    policyInforamation {\n      policyText,\n      linkButton\n    }\n  },\n  confirmationMessage {\n    title,\n    description,\n    sendingMessage\n  },\n  language\n}': ContactQueryResult;
+    '*[_type == "privacyPolicy"&& language == $language][0] {\n  _id,\n  mainTitle,\n  policyContent,\n  confirmedButton,\n  language\n}': PrivacyPolicyQueryResult;
   }
 }

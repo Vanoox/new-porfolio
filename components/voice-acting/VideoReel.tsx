@@ -6,6 +6,10 @@ export type YouTubeVideo = {
   title: string;
   description: string;
 };
+interface interfaceElements {
+  title: string;
+  textButton: string;
+}
 
 async function getLatestVideos(): Promise<YouTubeVideo[]> {
   const API_KEY = process.env.YOUTUBE_API_KEY;
@@ -42,27 +46,9 @@ async function getLatestVideos(): Promise<YouTubeVideo[]> {
   }
 }
 
-export default async function VideoReel() {
+export default async function VideoReel({ title, textButton }: interfaceElements) {
   const latestVideos = await getLatestVideos();
   const channelId = process.env.YOUTUBE_CHANNEL_ID || "UC...";
 
-  const fallbackVideos: YouTubeVideo[] = [
-    {
-      id: "fallback-1",
-      youtubeId: "dQw4w9WgXcQ",
-      title: "Epic Movie Trailer Voiceover (Fallback)",
-      description:
-        "A dark and gritty voiceover session for an upcoming blockbuster trailer. Focused on deep tones and dramatic pauses.",
-    },
-    {
-      id: "fallback-2",
-      youtubeId: "jNQXAC9IVRw",
-      title: "Upbeat Commercial Sample",
-      description: "High energy, fast-paced read for a national beverage campaign.",
-    },
-  ];
-
-  const videosToDisplay = latestVideos.length > 0 ? latestVideos : fallbackVideos;
-
-  return <VideoReelClient videos={videosToDisplay} channelId={channelId} />;
+  return <VideoReelClient videos={latestVideos} channelId={channelId} textButton={textButton} title={title} />;
 }

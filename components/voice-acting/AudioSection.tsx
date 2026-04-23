@@ -25,17 +25,28 @@ export interface Track {
 interface AudioSectionProps {
   tracks: Track[];
   defaultTrackId?: string;
+  title?: string;
+  selectSongString: string;
 }
 
-export default function AudioSection({ tracks, defaultTrackId }: AudioSectionProps) {
+interface PlayerProps {
+  selectSongString: string;
+}
+
+export default function AudioSection({ tracks, defaultTrackId, title, selectSongString }: AudioSectionProps) {
   return (
     <AudioPlayerProvider<Track>>
-      <AudioSectionInner tracks={tracks} defaultTrackId={defaultTrackId} />
+      <AudioSectionInner
+        tracks={tracks}
+        defaultTrackId={defaultTrackId}
+        title={title}
+        selectSongString={selectSongString}
+      />
     </AudioPlayerProvider>
   );
 }
 
-const AudioSectionInner = ({ tracks, defaultTrackId }: AudioSectionProps) => {
+const AudioSectionInner = ({ tracks, defaultTrackId, title, selectSongString }: AudioSectionProps) => {
   const player = useAudioPlayer<Track>();
 
   useEffect(() => {
@@ -49,10 +60,10 @@ const AudioSectionInner = ({ tracks, defaultTrackId }: AudioSectionProps) => {
   return (
     <>
       <div className="flex items-center mb-2 min-h-9">
-        <h2 className="text-sm font-semibold text-foreground">YouTube Showcase</h2>
+        <h2 className="text-sm font-semibold text-foreground">{title}</h2>
       </div>
       <Card className="mx-auto w-full overflow-hidden p-0">
-        <div className="flex flex-col lg:h-[180px] lg:flex-row">
+        <div className="flex flex-col lg:h-45 lg:flex-row">
           <div className="bg-muted/50 flex flex-col overflow-hidden lg:h-full lg:w-64">
             <ScrollArea className="h-48 w-full lg:h-full">
               <div className="space-y-1 p-3">
@@ -62,14 +73,14 @@ const AudioSectionInner = ({ tracks, defaultTrackId }: AudioSectionProps) => {
               </div>
             </ScrollArea>
           </div>
-          <Player />
+          <Player selectSongString={selectSongString} />
         </div>
       </Card>
     </>
   );
 };
 
-const Player = () => {
+const Player = ({ selectSongString }: PlayerProps) => {
   const player = useAudioPlayer<Track>();
   const [volume, setVolume] = useState(0.7);
 
@@ -84,7 +95,7 @@ const Player = () => {
     <div className="flex flex-1 items-center p-4 sm:p-6">
       <div className="mx-auto w-full max-w-2xl">
         <div className="mb-4">
-          <h3 className="text-base font-semibold sm:text-lg">{player.activeItem?.data?.title ?? "Wybierz utwór"}</h3>
+          <h3 className="text-base font-semibold sm:text-lg">{player.activeItem?.data?.title ?? selectSongString}</h3>
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
           <AudioPlayerButton
@@ -188,7 +199,7 @@ const SongListItem = ({ song, trackNumber }: { song: Track; trackNumber: number 
           if (isCurrentlyPlaying) {
             player.pause();
           } else {
-            player.play({
+            player.setActiveItem({
               id: song.id,
               src: song.src,
               data: song,
