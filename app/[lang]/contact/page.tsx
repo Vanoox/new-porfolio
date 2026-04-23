@@ -27,9 +27,18 @@ export default async function ContactPage(props: PageProps<"/[lang]/contact">) {
           namePlaceholder={page.contactForm?.nameField?.namePlaceholder ?? ""}
           email={page.contactForm?.emailField?.email ?? ""}
           emailPlaceholder={page.contactForm?.emailField?.emailPlaceholder ?? ""}
-          topic={page.contactForm?.topicField ?? ""}
-        />{" "}
-        //błąd do poprawy
+          topic={page.contactForm?.topicField?.title ?? ""}
+          // topicField={page.contactForm?.topicField ?? ""} // błąd do poprawy
+          message={page.contactForm?.messageField?.message ?? ""}
+          messagePlaceholder={page.contactForm?.messageField?.messagePlaceholder ?? ""}
+          sendButton={page.contactForm?.submitButton ?? ""}
+          sendingMessage={page.confirmationMessage?.sendingMessage ?? ""}
+          policyText={page.contactForm?.policyInforamation?.policyText ?? ""}
+          policyLink={page.contactForm?.policyInforamation?.linkButton ?? ""}
+          policyTitle={policy.mainTitle ?? ""}
+          // policyDescription={policy.policyContent ?? ""} // błąd do poprawy
+          policyAgreeButton={policy.confirmedButton ?? ""}
+        />
       </div>
     </div>
   );

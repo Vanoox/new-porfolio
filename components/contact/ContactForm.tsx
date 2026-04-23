@@ -25,7 +25,7 @@ type Props = {
   email: string;
   emailPlaceholder: string;
   topic: string;
-  topicField: string[];
+  // topicField: string[];
   message: string;
   messagePlaceholder: string;
   sendingMessage: string;
@@ -33,7 +33,7 @@ type Props = {
   policyText: string;
   policyLink: string;
   policyTitle: string;
-  policyDescription: string;
+  // policyDescription: string;
   policyAgreeButton: string;
 };
 
@@ -128,10 +128,14 @@ export default function ContactForm(props: Props) {
                   <SelectValue placeholder="Select topic" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="voice">{props.topicField}</SelectItem>
+                  {/* <SelectItem value="voice">{props.topicField}</SelectItem>
                   <SelectItem value="language">{props.topicField}</SelectItem>
                   <SelectItem value="pilates">{props.topicField}</SelectItem>
-                  <SelectItem value="other">{props.topicField}</SelectItem>
+                  <SelectItem value="other">{props.topicField}</SelectItem> */}
+                  <SelectItem value="voice">1</SelectItem>
+                  <SelectItem value="language">2</SelectItem>
+                  <SelectItem value="pilates">3</SelectItem>
+                  <SelectItem value="other">4</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
@@ -206,7 +210,7 @@ export default function ContactForm(props: Props) {
 
           <div className="p-6 sm:px-8 sm:py-6 overflow-y-auto overscroll-contain">
             <div className="prose prose-sm max-w-none text-muted-foreground">
-              {/* <h4 className="text-foreground font-semibold text-base mb-2">1. Introduction</h4>
+              <h4 className="text-foreground font-semibold text-base mb-2">1. Introduction</h4>
               <p className="mb-5">
                 Your privacy is important to me. This Privacy Policy explains how I collect, use, and protect your
                 personal information when you contact me through this website.
@@ -238,8 +242,8 @@ export default function ContactForm(props: Props) {
                 You have the right to request the deletion of any personal data I hold about you. If you wish to have
                 your previous communications deleted from my inbox, simply send a direct email to{" "}
                 <em>hello@johnthoinn.com</em>.
-              </p> */}
-              {props.policyDescription}
+              </p>
+              {/* {props.policyDescription} */}
             </div>
           </div>
 
