@@ -81,6 +81,20 @@ export const contact = defineType({
           name: "submitButton",
           type: "string",
         }),
+        defineField({
+          name: "policyInforamation",
+          type: "object",
+          fields: [
+            defineField({
+              name: "policyText",
+              type: "string",
+            }),
+            defineField({
+              name: "linkButton",
+              type: "string",
+            }),
+          ],
+        }),
       ],
     }),
     language,

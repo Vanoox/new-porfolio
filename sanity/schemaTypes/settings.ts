@@ -37,6 +37,14 @@ export const settings = defineType({
         }),
       ],
     }),
+    defineField({
+      name: "webstieName",
+      type: "string",
+    }),
+    defineField({
+      name: "websiteFavicon",
+      type: "image",
+    }),
   ],
   preview: {
     prepare() {
