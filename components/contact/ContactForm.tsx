@@ -68,7 +68,7 @@ export default function ContactForm(props: Props) {
     <>
       <Card className="w-full relative overflow-hidden rounded-4xl shadow-lg">
         <div
-          className={`absolute inset-0 z-20 flex items-center justify-center transition-all duration-300 pointer-events-none bg-background/40 backdrop-blur-[2px] ${
+          className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none bg-background/40 backdrop-blur-[2px] ${
             result !== null ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
         >
