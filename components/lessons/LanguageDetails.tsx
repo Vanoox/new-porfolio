@@ -15,7 +15,7 @@ export default function LanguageDetails(props: Props) {
     <section className="flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-between gap-6 md:gap-8 w-full">
         <TitleWithDescription description={props.mainDescription} title={props.mainTitle} />
-        <Card>
+        <Card className="w-full">
           <CardContent className="flex items-start gap-6">
             <div className="size-10 md:size-12 lg:size-16 shrink-0 rounded-full overflow-hidden flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-gb" viewBox="0 0 512 512">
@@ -38,7 +38,7 @@ export default function LanguageDetails(props: Props) {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="w-full">
           <CardContent className="flex items-start gap-6">
             <div className="size-10 md:size-12 lg:size-16 shrink-0 rounded-full overflow-hidden flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-jp" viewBox="0 0 512 512">

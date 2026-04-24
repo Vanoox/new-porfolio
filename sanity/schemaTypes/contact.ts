@@ -120,11 +120,19 @@ export const contact = defineType({
       type: "object",
       fields: [
         defineField({
-          name: "title",
+          name: "titleSuccess",
           type: "string",
         }),
         defineField({
-          name: "description",
+          name: "descriptionSuccess",
+          type: "text",
+        }),
+        defineField({
+          name: "titleFailed",
+          type: "string",
+        }),
+        defineField({
+          name: "descriptionFailed",
           type: "text",
         }),
         defineField({

@@ -27,8 +27,10 @@ export default async function ContactPage(props: PageProps<"/[lang]/contact">) {
           socialsTitle={page.socialsTitle ?? ""}
         />
         <ContactForm
-          confirmTitle={page.confirmationMessage?.title ?? ""}
-          confirmDescription={page.confirmationMessage?.description ?? ""}
+          confirmTitleSuccess={page.confirmationMessage?.titleSuccess ?? ""}
+          confirmDescriptionSucces={page.confirmationMessage?.descriptionSuccess ?? ""}
+          confirmTitleFailed={page.confirmationMessage?.titleFailed ?? ""}
+          confirmDescriptionFailed={page.confirmationMessage?.descriptionFailed ?? ""}
           mainTitle={page.mainTitle ?? ""}
           name={page.contactForm?.nameField?.name ?? ""}
           namePlaceholder={page.contactForm?.nameField?.namePlaceholder ?? ""}

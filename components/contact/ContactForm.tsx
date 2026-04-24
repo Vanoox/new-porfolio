@@ -16,11 +16,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PortableText } from "@portabletext/react";
-import { PortableTextBlock, PortableTextObject } from "sanity";
+import { PortableTextBlock } from "sanity";
+import { createSubmissions, CreateSubmissionsResult } from "@/lib/submissions";
+import { CheckCircleIcon, XCircleIcon } from "@phosphor-icons/react/ssr";
 
 type Props = {
-  confirmTitle: string;
-  confirmDescription: string;
+  confirmTitleSuccess: string;
+  confirmDescriptionSucces: string;
+  confirmTitleFailed: string;
+  confirmDescriptionFailed: string;
   mainTitle: string;
   name: string;
   namePlaceholder: string;
@@ -42,72 +46,68 @@ type Props = {
 
 export default function ContactForm(props: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [result, setResult] = useState<CreateSubmissionsResult | null>(null);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const form = e.currentTarget;
+    const result = await createSubmissions(new FormData(form));
+    setResult(result);
+    form.reset();
 
     setTimeout(() => {
+      setResult(null);
       setIsSubmitting(false);
-      setShowSuccess(true);
-      form.reset();
-
-      setTimeout(() => {
-        setShowSuccess(false);
-      }, 3000);
-    }, 1500);
+    }, 3000);
   };
 
-  console.log(props.policyDescription);
   return (
     <>
       <Card className="w-full relative overflow-hidden rounded-4xl shadow-lg">
         <div
           className={`absolute inset-0 z-20 flex items-center justify-center transition-all duration-300 pointer-events-none bg-background/40 backdrop-blur-[2px] ${
-            showSuccess ? "opacity-100 visible" : "opacity-0 invisible"
+            result !== null ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
         >
           <div
             className={`bg-background border border-border shadow-2xl rounded-2xl p-6 md:p-8 flex flex-col items-center text-center transform transition-transform duration-500 pointer-events-auto ${
-              showSuccess ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
+              result !== null ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
             }`}
           >
             <div className="w-14 h-14 bg-muted text-foreground rounded-full flex items-center justify-center mb-4">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              {result?.success ? (
+                <CheckCircleIcon size={32} className="text-green-500" />
+              ) : (
+                <XCircleIcon size={32} className="text-red-500" />
+              )}
             </div>
-            <h4 className="text-xl font-bold text-foreground mb-2">{props.confirmTitle}</h4>
-            <p className="text-sm text-muted-foreground">{props.confirmDescription}</p>
+            <h4 className="text-xl font-bold text-foreground mb-2">
+              {result?.success ? props.confirmTitleSuccess : props.confirmTitleFailed}
+            </h4>
+            <p className="text-sm text-muted-foreground">
+              {result?.success ? props.confirmDescriptionSucces : props.confirmDescriptionFailed}
+            </p>
           </div>
         </div>
 
-        <CardHeader className={`transition-opacity duration-300 ${showSuccess ? "opacity-30" : "opacity-100"}`}>
+        <CardHeader className={`transition-opacity duration-300 ${result !== null ? "opacity-30" : "opacity-100"}`}>
           <CardTitle className="text-xl font-semibold">{props.mainTitle}</CardTitle>
         </CardHeader>
 
-        <CardContent className={`transition-opacity duration-300 ${showSuccess ? "opacity-30" : "opacity-100"}`}>
+        <CardContent className={`transition-opacity duration-300 ${result !== null ? "opacity-30" : "opacity-100"}`}>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <Field>
               <FieldLabel htmlFor="name">{props.name}</FieldLabel>
               <Input
                 type="text"
                 id="name"
+                name="name"
+                maxLength={256}
                 required
-                disabled={isSubmitting || showSuccess}
+                disabled={isSubmitting || result !== null}
                 placeholder={props.namePlaceholder}
                 className="rounded-xl px-4 py-3"
               />
@@ -118,8 +118,10 @@ export default function ContactForm(props: Props) {
               <Input
                 type="email"
                 id="email"
+                name="email"
+                maxLength={256}
                 required
-                disabled={isSubmitting || showSuccess}
+                disabled={isSubmitting || result !== null}
                 placeholder={props.emailPlaceholder}
                 className="rounded-xl px-4 py-3"
               />
@@ -127,11 +129,11 @@ export default function ContactForm(props: Props) {
 
             <Field>
               <FieldLabel htmlFor="topic">{props.topic}</FieldLabel>
-              <Select disabled={isSubmitting || showSuccess}>
+              <Select disabled={isSubmitting || result !== null} name="topic">
                 <SelectTrigger id="topic" className="rounded-xl px-4 py-3 h-auto">
                   <SelectValue placeholder={props.topicPlaceholder} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   {props.topicField.map((option, index) => (
                     <SelectItem key={index} value={option}>
                       {option}
@@ -145,9 +147,11 @@ export default function ContactForm(props: Props) {
               <FieldLabel htmlFor="message">{props.message}</FieldLabel>
               <Textarea
                 id="message"
+                name="message"
+                maxLength={4096}
                 required
                 rows={4}
-                disabled={isSubmitting || showSuccess}
+                disabled={isSubmitting || result !== null}
                 placeholder={props.messagePlaceholder}
                 className="resize-none rounded-xl px-4 py-3"
               />
@@ -155,7 +159,7 @@ export default function ContactForm(props: Props) {
 
             <Button
               type="submit"
-              disabled={isSubmitting || showSuccess}
+              disabled={isSubmitting || result !== null}
               className="mt-4 w-full py-6 rounded-xl text-sm font-semibold transition-all shadow-md"
             >
               {isSubmitting ? (

@@ -15,6 +15,19 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type Submissions = {
+  _id: string;
+  _type: "submissions";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  date?: string;
+  name?: string;
+  email?: string;
+  topic?: string;
+  message?: string;
+};
+
 export type PrivacyPolicy = {
   _id: string;
   _type: "privacyPolicy";
@@ -291,8 +304,10 @@ export type Contact = {
     };
   };
   confirmationMessage?: {
-    title?: string;
-    description?: string;
+    titleSuccess?: string;
+    descriptionSuccess?: string;
+    titleFailed?: string;
+    descriptionFailed?: string;
     sendingMessage?: string;
   };
   language?: "pl" | "en" | "jp";
@@ -402,6 +417,7 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
+  | Submissions
   | PrivacyPolicy
   | Navigation
   | SanityFileAssetReference
@@ -572,7 +588,7 @@ export type TrainingQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: contactQuery
-// Query: *[_type == "contact" && language == $language][0] {  _id,  mainTitle,  mainDescription,  emailTitle,  socialsTitle,  contactForm {    formTitle,    nameField {      name,      namePlaceholder    },    emailField {      email,      emailPlaceholder    },    topicField {      title,      topicPlaceholder,      topicContent    },    messageField {      message,      messagePlaceholder    },    submitButton,    policyInforamation {      policyText,      linkButton    }  },  confirmationMessage {    title,    description,    sendingMessage  },  language}
+// Query: *[_type == "contact" && language == $language][0] {  _id,  mainTitle,  mainDescription,  emailTitle,  socialsTitle,  contactForm {    formTitle,    nameField {      name,      namePlaceholder    },    emailField {      email,      emailPlaceholder    },    topicField {      title,      topicPlaceholder,      topicContent    },    messageField {      message,      messagePlaceholder    },    submitButton,    policyInforamation {      policyText,      linkButton    }  },  confirmationMessage {    titleSuccess,    descriptionSuccess,    titleFailed,    descriptionFailed,    sendingMessage  },  language}
 export type ContactQueryResult = {
   _id: string;
   mainTitle: string | null;
@@ -605,8 +621,10 @@ export type ContactQueryResult = {
     } | null;
   } | null;
   confirmationMessage: {
-    title: string | null;
-    description: string | null;
+    titleSuccess: string | null;
+    descriptionSuccess: string | null;
+    titleFailed: string | null;
+    descriptionFailed: string | null;
     sendingMessage: string | null;
   } | null;
   language: "en" | "jp" | "pl" | null;
@@ -665,7 +683,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"voiceActing\" && language == $language][0]{\n    _id,\n    mainTitle,\n    mainDescription,\n\n    audioSection{\n      titleAudioSection,\n      selectSong,\n      audioFiles[]{\n        'id': _key,\n        'title': audioName,\n        \"src\": file.asset->url,\n      }\n    },\n\n    videoSection{\n      titleVideoSection,\n      viewYTButton,\n    },\n    \n    language\n  }\n": VoiceActingQueryResult;
     '*[_type == "lessons" && language == $language][0] {\n  _id,\n  leftSide {\n    title,\n    description,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  rightSide {\n    title,\n    description,\n    englishCard {\n      title,\n      description\n    },\n    japaneseCard {\n      title,\n      description\n    }\n  },\n  contactCard {\n    title,\n    description,\n    nameButton\n  },\n  language\n}': LessonsQueryResult;
     '*[_type == "training" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  personalTreningCard {\n    title,\n    description,\n    button,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  pilatesTreningCard {\n    title,\n    description,\n    button,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  language\n}': TrainingQueryResult;
-    '*[_type == "contact" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  emailTitle,\n  socialsTitle,\n  contactForm {\n    formTitle,\n    nameField {\n      name,\n      namePlaceholder\n    },\n    emailField {\n      email,\n      emailPlaceholder\n    },\n    topicField {\n      title,\n      topicPlaceholder,\n      topicContent\n    },\n    messageField {\n      message,\n      messagePlaceholder\n    },\n    submitButton,\n    policyInforamation {\n      policyText,\n      linkButton\n    }\n  },\n  confirmationMessage {\n    title,\n    description,\n    sendingMessage\n  },\n  language\n}': ContactQueryResult;
+    '*[_type == "contact" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  emailTitle,\n  socialsTitle,\n  contactForm {\n    formTitle,\n    nameField {\n      name,\n      namePlaceholder\n    },\n    emailField {\n      email,\n      emailPlaceholder\n    },\n    topicField {\n      title,\n      topicPlaceholder,\n      topicContent\n    },\n    messageField {\n      message,\n      messagePlaceholder\n    },\n    submitButton,\n    policyInforamation {\n      policyText,\n      linkButton\n    }\n  },\n  confirmationMessage {\n    titleSuccess,\n    descriptionSuccess,\n    titleFailed,\n    descriptionFailed,\n    sendingMessage\n  },\n  language\n}': ContactQueryResult;
     '*[_type == "privacyPolicy"&& language == $language][0] {\n  _id,\n  mainTitle,\n  policyContent,\n  confirmedButton,\n  language\n}': PrivacyPolicyQueryResult;
     '*[_type == "navigation" && language == $language][0] {\n  _id,\n  navigations {\n    home,\n    voiceActing,\n    lessons,\n    training,\n    contact\n  },\n  languageSwitcher,\n  language\n}': NavigationResult;
   }

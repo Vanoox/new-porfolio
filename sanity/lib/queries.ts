@@ -133,8 +133,10 @@ export const contactQuery = defineQuery(`*[_type == "contact" && language == $la
     }
   },
   confirmationMessage {
-    title,
-    description,
+    titleSuccess,
+    descriptionSuccess,
+    titleFailed,
+    descriptionFailed,
     sendingMessage
   },
   language
