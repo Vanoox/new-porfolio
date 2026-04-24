@@ -13,7 +13,7 @@ type Props = {
 export default function LanguageDetails(props: Props) {
   return (
     <section className="flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-between gap-6 md:gap-8">
+      <div className="flex flex-col items-center justify-between gap-6 md:gap-8 w-full">
         <TitleWithDescription description={props.mainDescription} title={props.mainTitle} />
         <Card>
           <CardContent className="flex items-start gap-6">

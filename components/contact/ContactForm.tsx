@@ -15,6 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PortableText } from "@portabletext/react";
+import { PortableTextBlock, PortableTextObject } from "sanity";
 
 type Props = {
   confirmTitle: string;
@@ -25,7 +27,8 @@ type Props = {
   email: string;
   emailPlaceholder: string;
   topic: string;
-  // topicField: string[];
+  topicPlaceholder: string;
+  topicField: string[];
   message: string;
   messagePlaceholder: string;
   sendingMessage: string;
@@ -33,7 +36,7 @@ type Props = {
   policyText: string;
   policyLink: string;
   policyTitle: string;
-  // policyDescription: string;
+  policyDescription: PortableTextBlock[] | null;
   policyAgreeButton: string;
 };
 
@@ -59,6 +62,7 @@ export default function ContactForm(props: Props) {
     }, 1500);
   };
 
+  console.log(props.policyDescription);
   return (
     <>
       <Card className="w-full relative overflow-hidden rounded-4xl shadow-lg">
@@ -123,19 +127,16 @@ export default function ContactForm(props: Props) {
 
             <Field>
               <FieldLabel htmlFor="topic">{props.topic}</FieldLabel>
-              <Select disabled={isSubmitting || showSuccess} defaultValue="voice">
+              <Select disabled={isSubmitting || showSuccess}>
                 <SelectTrigger id="topic" className="rounded-xl px-4 py-3 h-auto">
-                  <SelectValue placeholder="Select topic" />
+                  <SelectValue placeholder={props.topicPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
-                  {/* <SelectItem value="voice">{props.topicField}</SelectItem>
-                  <SelectItem value="language">{props.topicField}</SelectItem>
-                  <SelectItem value="pilates">{props.topicField}</SelectItem>
-                  <SelectItem value="other">{props.topicField}</SelectItem> */}
-                  <SelectItem value="voice">1</SelectItem>
-                  <SelectItem value="language">2</SelectItem>
-                  <SelectItem value="pilates">3</SelectItem>
-                  <SelectItem value="other">4</SelectItem>
+                  {props.topicField.map((option, index) => (
+                    <SelectItem key={index} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
@@ -209,42 +210,9 @@ export default function ContactForm(props: Props) {
           </DialogHeader>
 
           <div className="p-6 sm:px-8 sm:py-6 overflow-y-auto overscroll-contain">
-            <div className="prose prose-sm max-w-none text-muted-foreground">
-              <h4 className="text-foreground font-semibold text-base mb-2">1. Introduction</h4>
-              <p className="mb-5">
-                Your privacy is important to me. This Privacy Policy explains how I collect, use, and protect your
-                personal information when you contact me through this website.
-              </p>
-
-              <h4 className="text-foreground font-semibold text-base mb-2">2. Information I Collect</h4>
-              <p className="mb-5">
-                When you submit the contact form, I collect the personal data you provide, which includes your{" "}
-                <strong>Name</strong>, <strong>Email Address</strong>, and the contents of your <strong>Message</strong>
-                .
-              </p>
-
-              <h4 className="text-foreground font-semibold text-base mb-2">3. How I Use Your Information</h4>
-              <p className="mb-5">
-                The information provided is used strictly to respond to your inquiry, discuss potential business
-                opportunities, and provide you with the services you requested (e.g., voice acting, language lessons, or
-                fitness training). I do not use your email for marketing newsletters unless explicitly requested.
-              </p>
-
-              <h4 className="text-foreground font-semibold text-base mb-2">4. Data Sharing & Security</h4>
-              <p className="mb-5">
-                Your personal information will never be sold, rented, or shared with third parties. All data transmitted
-                through this form is sent via secure, encrypted protocols and is stored only as long as necessary to
-                fulfill the purpose of your request.
-              </p>
-
-              <h4 className="text-foreground font-semibold text-base mb-2">5. Your Rights</h4>
-              <p>
-                You have the right to request the deletion of any personal data I hold about you. If you wish to have
-                your previous communications deleted from my inbox, simply send a direct email to{" "}
-                <em>hello@johnthoinn.com</em>.
-              </p>
-              {/* {props.policyDescription} */}
-            </div>
+            <article className="prose prose-custom prose-sm max-w-none text-muted-foreground">
+              {props.policyDescription && <PortableText value={props.policyDescription} />}
+            </article>
           </div>
 
           <DialogFooter className="px-6 py-4 sm:px-8 border-t border-border bg-muted/30 shrink-0">

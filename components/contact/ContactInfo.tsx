@@ -14,6 +14,10 @@ import { Socials } from "@/lib/types";
 type ContactInfoProps = {
   email?: string;
   socials?: Socials;
+  mainTitle: string;
+  mainDescription: string;
+  emailTitle: string;
+  socialsTitle: string;
 };
 
 export default function ContactInfo(props: ContactInfoProps) {
@@ -54,18 +58,17 @@ export default function ContactInfo(props: ContactInfoProps) {
     <section className="flex flex-col gap-6">
       <TitleWithDescription
         styleSection="flex flex-col items-start jutsify-start"
-        title="Get in touch"
-        description="Whether you want to discuss a potential voice acting project, book a private language lesson, or schedule a
-        pilates training session, I'm here to help."
+        title={props.mainTitle}
+        description={props.mainDescription}
       ></TitleWithDescription>
       <div>
-        <h3 className="text-lg text-foreground font-semibold">Direct Email</h3>
+        <h3 className="text-lg text-foreground font-semibold">{props.emailTitle}</h3>
         <Link href="mailto:hello@johnthoinn.com" className="text-base text-muted-foreground leading-relaxed max-w-md">
           {props.email}
         </Link>
       </div>
       <div>
-        <h3 className="text-lg text-foreground font-semibold mb-4">Social Media</h3>
+        <h3 className="text-lg text-foreground font-semibold mb-4">{props.socialsTitle}</h3>
         <div className="flex flex-col gap-3">
           {socials.map((social, idx) => (
             <Fragment key={idx}>

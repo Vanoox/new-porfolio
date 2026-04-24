@@ -106,6 +106,7 @@ export const contactQuery = defineQuery(`*[_type == "contact" && language == $la
   mainTitle,
   mainDescription,
   emailTitle,
+  socialsTitle,
   contactForm {
     formTitle,
     nameField {
@@ -118,6 +119,7 @@ export const contactQuery = defineQuery(`*[_type == "contact" && language == $la
     },
     topicField {
       title,
+      topicPlaceholder,
       topicContent
     },
     messageField {
@@ -143,5 +145,18 @@ export const privacyPolicyQuery = defineQuery(`*[_type == "privacyPolicy"&& lang
   mainTitle,
   policyContent,
   confirmedButton,
+  language
+}`);
+
+export const navigation = defineQuery(`*[_type == "navigation" && language == $language][0] {
+  _id,
+  navigations {
+    home,
+    voiceActing,
+    lessons,
+    training,
+    contact
+  },
+  languageSwitcher,
   language
 }`);

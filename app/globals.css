@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -127,6 +128,44 @@
   --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
   --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+}
+
+@utility prose-custom {
+  /* Wersja jasna (podstawowa) */
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--accent-foreground);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--accent-foreground);
+  --tw-prose-bold: var(--accent-foreground);
+  --tw-prose-counters: var(--secondary);
+  --tw-prose-bullets: var(--accent);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--accent-foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--accent-foreground);
+  --tw-prose-pre-code: var(--background);
+  --tw-prose-pre-bg: var(--foreground);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--muted);
+
+  /* Wersja ciemna (invert) */
+  --tw-prose-invert-body: var(--muted);
+  --tw-prose-invert-headings: var(--background);
+  --tw-prose-invert-lead: var(--border);
+  --tw-prose-invert-links: var(--background);
+  --tw-prose-invert-bold: var(--background);
+  --tw-prose-invert-counters: var(--accent);
+  --tw-prose-invert-bullets: var(--secondary);
+  --tw-prose-invert-hr: var(--muted-foreground);
+  --tw-prose-invert-quotes: var(--background);
+  --tw-prose-invert-quote-borders: var(--muted-foreground);
+  --tw-prose-invert-captions: var(--accent);
+  --tw-prose-invert-code: var(--background);
+  --tw-prose-invert-pre-code: var(--border);
+  --tw-prose-invert-pre-bg: rgb(0 0 0 / 50%);
+  --tw-prose-invert-th-borders: var(--secondary);
+  --tw-prose-invert-td-borders: var(--muted-foreground);
 }
 
 @theme inline {

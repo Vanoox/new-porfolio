@@ -264,6 +264,7 @@ export type Contact = {
   mainTitle?: string;
   mainDescription?: string;
   emailTitle?: string;
+  socialsTitle?: string;
   contactForm?: {
     formTitle?: string;
     nameField?: {
@@ -276,6 +277,7 @@ export type Contact = {
     };
     topicField?: {
       title?: string;
+      topicPlaceholder?: string;
       topicContent?: Array<string>;
     };
     messageField?: {
@@ -570,12 +572,13 @@ export type TrainingQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: contactQuery
-// Query: *[_type == "contact" && language == $language][0] {  _id,  mainTitle,  mainDescription,  emailTitle,  contactForm {    formTitle,    nameField {      name,      namePlaceholder    },    emailField {      email,      emailPlaceholder    },    topicField {      title,      topicContent    },    messageField {      message,      messagePlaceholder    },    submitButton,    policyInforamation {      policyText,      linkButton    }  },  confirmationMessage {    title,    description,    sendingMessage  },  language}
+// Query: *[_type == "contact" && language == $language][0] {  _id,  mainTitle,  mainDescription,  emailTitle,  socialsTitle,  contactForm {    formTitle,    nameField {      name,      namePlaceholder    },    emailField {      email,      emailPlaceholder    },    topicField {      title,      topicPlaceholder,      topicContent    },    messageField {      message,      messagePlaceholder    },    submitButton,    policyInforamation {      policyText,      linkButton    }  },  confirmationMessage {    title,    description,    sendingMessage  },  language}
 export type ContactQueryResult = {
   _id: string;
   mainTitle: string | null;
   mainDescription: string | null;
   emailTitle: string | null;
+  socialsTitle: string | null;
   contactForm: {
     formTitle: string | null;
     nameField: {
@@ -588,6 +591,7 @@ export type ContactQueryResult = {
     } | null;
     topicField: {
       title: string | null;
+      topicPlaceholder: string | null;
       topicContent: Array<string> | null;
     } | null;
     messageField: {
@@ -636,6 +640,22 @@ export type PrivacyPolicyQueryResult = {
   language: "en" | "jp" | "pl" | null;
 } | null;
 
+// Source: sanity/lib/queries.ts
+// Variable: navigation
+// Query: *[_type == "navigation" && language == $language][0] {  _id,  navigations {    home,    voiceActing,    lessons,    training,    contact  },  languageSwitcher,  language}
+export type NavigationResult = {
+  _id: string;
+  navigations: {
+    home: string | null;
+    voiceActing: string | null;
+    lessons: string | null;
+    training: string | null;
+    contact: string | null;
+  } | null;
+  languageSwitcher: string | null;
+  language: "en" | "jp" | "pl" | null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -645,7 +665,8 @@ declare module "@sanity/client" {
     "\n  *[_type == \"voiceActing\" && language == $language][0]{\n    _id,\n    mainTitle,\n    mainDescription,\n\n    audioSection{\n      titleAudioSection,\n      selectSong,\n      audioFiles[]{\n        'id': _key,\n        'title': audioName,\n        \"src\": file.asset->url,\n      }\n    },\n\n    videoSection{\n      titleVideoSection,\n      viewYTButton,\n    },\n    \n    language\n  }\n": VoiceActingQueryResult;
     '*[_type == "lessons" && language == $language][0] {\n  _id,\n  leftSide {\n    title,\n    description,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  rightSide {\n    title,\n    description,\n    englishCard {\n      title,\n      description\n    },\n    japaneseCard {\n      title,\n      description\n    }\n  },\n  contactCard {\n    title,\n    description,\n    nameButton\n  },\n  language\n}': LessonsQueryResult;
     '*[_type == "training" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  personalTreningCard {\n    title,\n    description,\n    button,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  pilatesTreningCard {\n    title,\n    description,\n    button,\n    image {\n      asset->{\n        url,\n        metadata\n      }\n    }\n  },\n  language\n}': TrainingQueryResult;
-    '*[_type == "contact" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  emailTitle,\n  contactForm {\n    formTitle,\n    nameField {\n      name,\n      namePlaceholder\n    },\n    emailField {\n      email,\n      emailPlaceholder\n    },\n    topicField {\n      title,\n      topicContent\n    },\n    messageField {\n      message,\n      messagePlaceholder\n    },\n    submitButton,\n    policyInforamation {\n      policyText,\n      linkButton\n    }\n  },\n  confirmationMessage {\n    title,\n    description,\n    sendingMessage\n  },\n  language\n}': ContactQueryResult;
+    '*[_type == "contact" && language == $language][0] {\n  _id,\n  mainTitle,\n  mainDescription,\n  emailTitle,\n  socialsTitle,\n  contactForm {\n    formTitle,\n    nameField {\n      name,\n      namePlaceholder\n    },\n    emailField {\n      email,\n      emailPlaceholder\n    },\n    topicField {\n      title,\n      topicPlaceholder,\n      topicContent\n    },\n    messageField {\n      message,\n      messagePlaceholder\n    },\n    submitButton,\n    policyInforamation {\n      policyText,\n      linkButton\n    }\n  },\n  confirmationMessage {\n    title,\n    description,\n    sendingMessage\n  },\n  language\n}': ContactQueryResult;
     '*[_type == "privacyPolicy"&& language == $language][0] {\n  _id,\n  mainTitle,\n  policyContent,\n  confirmedButton,\n  language\n}': PrivacyPolicyQueryResult;
+    '*[_type == "navigation" && language == $language][0] {\n  _id,\n  navigations {\n    home,\n    voiceActing,\n    lessons,\n    training,\n    contact\n  },\n  languageSwitcher,\n  language\n}': NavigationResult;
   }
 }

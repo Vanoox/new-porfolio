@@ -15,6 +15,7 @@ import { GlobeIcon } from "@phosphor-icons/react/ssr";
 
 type LanguageSwitcherProps = {
   currentLang: string;
+  languageSwitcher: string;
 };
 
 export function LanguageSwitcher(props: LanguageSwitcherProps) {
@@ -22,7 +23,7 @@ export function LanguageSwitcher(props: LanguageSwitcherProps) {
   const languages = [
     { code: "en", label: "English" },
     { code: "pl", label: "Polski" },
-    { code: "jp", label: "日本語 (Japanese)" },
+    { code: "jp", label: "日本語" },
   ];
 
   return (
@@ -36,7 +37,7 @@ export function LanguageSwitcher(props: LanguageSwitcherProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40">
-        <DropdownMenuLabel>Języki</DropdownMenuLabel>
+        <DropdownMenuLabel>{props.languageSwitcher}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {languages.map((l) => (
           <DropdownMenuItem key={l.code} asChild>

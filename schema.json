@@ -1587,6 +1587,13 @@
         },
         "optional": true
       },
+      "socialsTitle": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "contactForm": {
         "type": "objectAttribute",
         "value": {
@@ -1651,6 +1658,13 @@
                 "type": "object",
                 "attributes": {
                   "title": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "topicPlaceholder": {
                     "type": "objectAttribute",
                     "value": {
                       "type": "string"

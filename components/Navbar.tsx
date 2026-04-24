@@ -17,6 +17,12 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 type NavbarProps = {
   currentLang: string;
+  home: string;
+  voiceActing: string;
+  lessons: string;
+  training: string;
+  contact: string;
+  languageSwitcher: string;
 };
 
 export default function Navbar(props: NavbarProps) {
@@ -42,27 +48,27 @@ export default function Navbar(props: NavbarProps) {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink asChild active={pathname === `/${props.currentLang}`}>
-                <Link href={`/${props.currentLang}`}>Home</Link>
+                <Link href={`/${props.currentLang}`}>{props.home}</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild active={pathname === `/${props.currentLang}/voice-acting`}>
-                <Link href={`/${props.currentLang}/voice-acting`}>Voice Acting</Link>
+                <Link href={`/${props.currentLang}/voice-acting`}>{props.voiceActing}</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild active={pathname === `/${props.currentLang}/lessons`}>
-                <Link href={`/${props.currentLang}/lessons`}>Lessons</Link>
+                <Link href={`/${props.currentLang}/lessons`}>{props.lessons}</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild active={pathname === `/${props.currentLang}/training`}>
-                <Link href={`/${props.currentLang}/training`}>Training</Link>
+                <Link href={`/${props.currentLang}/training`}>{props.training}</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild active={pathname === `/${props.currentLang}/contact`}>
-                <Link href={`/${props.currentLang}/contact`}>Contact</Link>
+                <Link href={`/${props.currentLang}/contact`}>{props.contact}</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
@@ -70,7 +76,7 @@ export default function Navbar(props: NavbarProps) {
       </div>
 
       <div className="flex items-center justify-end space-x-3 md:space-x-4 shrink-0">
-        <LanguageSwitcher currentLang={props.currentLang} />
+        <LanguageSwitcher currentLang={props.currentLang} languageSwitcher={props.languageSwitcher} />
 
         <ThemeToggle />
 
@@ -93,35 +99,35 @@ export default function Navbar(props: NavbarProps) {
                   <NavigationMenuItem>
                     <NavigationMenuLink className="text-lg" asChild>
                       <Link href={`/${props.currentLang}`} onClick={() => setIsOpen(false)}>
-                        Home
+                        {props.home}
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink className="text-lg" asChild>
                       <Link href={`/${props.currentLang}/voice-acting`} onClick={() => setIsOpen(false)}>
-                        Voice Acting
+                        {props.voiceActing}
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink className="text-lg" asChild>
                       <Link href={`/${props.currentLang}/lessons`} onClick={() => setIsOpen(false)}>
-                        Lessons
+                        {props.lessons}
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink className="text-lg" asChild>
                       <Link href={`/${props.currentLang}/training`} onClick={() => setIsOpen(false)}>
-                        Training
+                        {props.training}
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuLink className="text-lg" asChild>
                       <Link href={`/${props.currentLang}/contact`} onClick={() => setIsOpen(false)}>
-                        Contact
+                        {props.contact}
                       </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>

@@ -19,6 +19,10 @@ export const contact = defineType({
       type: "string",
     }),
     defineField({
+      name: "socialsTitle",
+      type: "string",
+    }),
+    defineField({
       type: "object",
       name: "contactForm",
       fields: [
@@ -60,6 +64,10 @@ export const contact = defineType({
           fields: [
             defineField({
               name: "title",
+              type: "string",
+            }),
+            defineField({
+              name: "topicPlaceholder",
               type: "string",
             }),
             defineField({

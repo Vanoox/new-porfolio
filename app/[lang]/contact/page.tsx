@@ -18,7 +18,14 @@ export default async function ContactPage(props: PageProps<"/[lang]/contact">) {
   return (
     <div className="w-full max-w-5xl flex-1 flex flex-col">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start flex-1">
-        <ContactInfo email={settings.contactEmail} socials={settings.socials} />
+        <ContactInfo
+          email={settings.contactEmail}
+          socials={settings.socials}
+          mainTitle={page.mainTitle ?? ""}
+          mainDescription={page.mainDescription ?? ""}
+          emailTitle={page.emailTitle ?? ""}
+          socialsTitle={page.socialsTitle ?? ""}
+        />
         <ContactForm
           confirmTitle={page.confirmationMessage?.title ?? ""}
           confirmDescription={page.confirmationMessage?.description ?? ""}
@@ -28,7 +35,8 @@ export default async function ContactPage(props: PageProps<"/[lang]/contact">) {
           email={page.contactForm?.emailField?.email ?? ""}
           emailPlaceholder={page.contactForm?.emailField?.emailPlaceholder ?? ""}
           topic={page.contactForm?.topicField?.title ?? ""}
-          // topicField={page.contactForm?.topicField ?? ""} // błąd do poprawy
+          topicPlaceholder={page.contactForm?.topicField?.topicPlaceholder ?? ""}
+          topicField={page.contactForm?.topicField?.topicContent ?? []}
           message={page.contactForm?.messageField?.message ?? ""}
           messagePlaceholder={page.contactForm?.messageField?.messagePlaceholder ?? ""}
           sendButton={page.contactForm?.submitButton ?? ""}
@@ -36,7 +44,7 @@ export default async function ContactPage(props: PageProps<"/[lang]/contact">) {
           policyText={page.contactForm?.policyInforamation?.policyText ?? ""}
           policyLink={page.contactForm?.policyInforamation?.linkButton ?? ""}
           policyTitle={policy.mainTitle ?? ""}
-          // policyDescription={policy.policyContent ?? ""} // błąd do poprawy
+          policyDescription={policy.policyContent}
           policyAgreeButton={policy.confirmedButton ?? ""}
         />
       </div>
