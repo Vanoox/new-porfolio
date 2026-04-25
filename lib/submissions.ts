@@ -1,10 +1,10 @@
 "use server";
 
+import { client } from "@/sanity/lib/client";
 import z from "zod";
 
 export type CreateSubmissionsResult = {
   success: boolean;
-  message: string;
 };
 
 const submissionSchema = z.object({
@@ -20,20 +20,27 @@ export async function createSubmissions(formData: FormData): Promise<CreateSubmi
   const message = formData.get("message");
 
   const result = submissionSchema.safeParse({ name, email, topic, message });
-  console.log(result);
   if (!result.success) {
     return {
       success: false,
-      message: "dupa",
-    };
-  } else {
-    return {
-      success: true,
-      message: "gówno",
     };
   }
-
-  console.log(name, email, topic, message);
-  // Mutate data
-  // Revalidate cache
+  try {
+    await client.create({
+      _type: "submissions",
+      name: result.data.name,
+      email: result.data.email,
+      topic: result.data.topic,
+      message: result.data.message,
+      date: new Date().toISOString(),
+    });
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error("Error creating submission:", error);
+    return {
+      success: false,
+    };
+  }
 }
