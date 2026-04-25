@@ -4,6 +4,12 @@ import { contactQuery, privacyPolicyQuery, settingsQuery } from "@/sanity/lib/qu
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "pl" }, { lang: "jp" }];
+}
+
 export default async function ContactPage(props: PageProps<"/[lang]/contact">) {
   const params = await props.params;
 

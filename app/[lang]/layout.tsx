@@ -8,6 +8,8 @@ import { client } from "@/sanity/lib/client";
 import { notFound } from "next/navigation";
 import { navigation, settingsQuery } from "@/sanity/lib/queries";
 
+export const revalidate = 3600;
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

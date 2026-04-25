@@ -5,6 +5,12 @@ import { client } from "@/sanity/lib/client";
 import { voiceActingQuery } from "@/sanity/lib/queries";
 import { notFound } from "next/navigation";
 
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "pl" }, { lang: "jp" }];
+}
+
 export default async function VoiceActingPage(props: PageProps<"/[lang]">) {
   const params = await props.params;
   const page = await client.fetch(voiceActingQuery, { language: params.lang });

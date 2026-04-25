@@ -8,6 +8,12 @@ import { lessonsQuery } from "@/sanity/lib/queries";
 import { client } from "@/sanity/lib/client";
 import { notFound } from "next/navigation";
 
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "pl" }, { lang: "jp" }];
+}
+
 export default async function LanguageTutoringPage(props: PageProps<"/[lang]">) {
   const params = await props.params;
 
