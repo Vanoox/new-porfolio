@@ -6,7 +6,7 @@ import DynamicBackground from "@/components/DynamicBackground";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { client } from "@/sanity/lib/client";
 import { notFound } from "next/navigation";
-import { navigation } from "@/sanity/lib/queries";
+import { navigation, settingsQuery } from "@/sanity/lib/queries";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,14 +18,20 @@ export const metadata: Metadata = {
 export default async function Layout(props: LayoutProps<"/[lang]">) {
   const params = await props.params;
 
-  const page = await client.fetch(navigation, { language: params.lang });
+  const [page, settings] = await Promise.all([
+    client.fetch(navigation, { language: params.lang }),
+    client.fetch(settingsQuery),
+  ]);
 
   if (page === null) {
     notFound();
   }
 
+  const customCss = settings?.cssVariables;
+
   return (
     <html lang={params.lang} suppressHydrationWarning>
+      <head>{customCss && <style dangerouslySetInnerHTML={{ __html: customCss }} />}</head>
       <body
         className={`${inter.className} bg-gray-100 dark:bg-[#0A0D13] min-h-screen flex items-center justify-center relative overflow-x-hidden transition-colors duration-500`}
       >

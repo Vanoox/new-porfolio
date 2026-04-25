@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { socialMedia } from "@/sanity/schemaTypes/fields/social-media";
+import { de } from "zod/locales";
 
 export const settings = defineType({
   name: "settings",
@@ -44,6 +45,12 @@ export const settings = defineType({
     defineField({
       name: "websiteFavicon",
       type: "image",
+    }),
+    defineField({
+      name: "cssVariables",
+      title: "Color styles",
+      description: `Set your website's graphic styles using CSS variables.\n1. Go to https://tweakcn.com/editor/theme\n2. Set the colors, then generate the code using the “Code” button\n3. Paste :root and .dark into the editor`,
+      type: "text",
     }),
   ],
   preview: {

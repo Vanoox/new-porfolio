@@ -205,6 +205,7 @@ export type Settings = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  cssVariables?: string;
 };
 
 export type Lessons = {
@@ -480,6 +481,7 @@ export type SettingsQueryResult = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  cssVariables?: string;
 } | null;
 
 // Source: sanity/lib/queries.ts
