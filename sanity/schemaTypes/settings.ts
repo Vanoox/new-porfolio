@@ -1,7 +1,8 @@
 import { defineField, defineType } from "sanity";
 import { socialMedia } from "@/sanity/schemaTypes/fields/social-media";
-import { de } from "zod/locales";
+import React from "react";
 
+const e = React.createElement;
 export const settings = defineType({
   name: "settings",
   title: "Settings",
@@ -49,7 +50,64 @@ export const settings = defineType({
     defineField({
       name: "cssVariables",
       title: "Color styles",
-      description: `Set your website's graphic styles using CSS variables.\n1. Go to https://tweakcn.com/editor/theme\n2. Set the colors, then generate the code using the “Code” button\n3. Paste :root and .dark into the editor`,
+      description: e(
+        "span",
+        { style: { display: "block", marginTop: "0.5em" } },
+        "Set your website's graphic styles using CSS variables.",
+        e(
+          "ol",
+          { style: { marginTop: "0.5em", paddingLeft: "1.5em", lineHeight: "1.6" } },
+          e(
+            "li",
+            null,
+            "Go to ",
+            e(
+              "a",
+              {
+                href: "https://tweakcn.com/editor/theme",
+                target: "_blank",
+                rel: "noopener noreferrer",
+                style: { textDecoration: "underline", color: "#2276fc" },
+              },
+              "https://tweakcn.com/editor/theme",
+            ),
+          ),
+          e("li", null, "Set the colors, then generate the code using the “Code” button"),
+          e(
+            "li",
+            null,
+            "Paste ",
+            e(
+              "code",
+              {
+                style: {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  color: "#e2e8f0",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                },
+              },
+              ":root",
+            ),
+            " and ",
+            e(
+              "code",
+              {
+                style: {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  color: "#e2e8f0",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                },
+              },
+              ".dark",
+            ),
+            " into the editor",
+          ),
+        ),
+      ),
       type: "text",
     }),
   ],

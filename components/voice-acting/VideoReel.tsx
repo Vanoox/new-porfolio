@@ -30,7 +30,7 @@ async function getLatestVideos(): Promise<YouTubeVideo[]> {
     const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
 
     const playlistRes = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=5&key=${API_KEY}`,
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=10&key=${API_KEY}`,
       { next: { revalidate: 3600 } },
     );
     const playlistData = await playlistRes.json();
